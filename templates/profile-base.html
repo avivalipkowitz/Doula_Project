@@ -19,12 +19,16 @@
 		</div>
 
 		<div class="container">
-			<div id="single-box-outer">
-				<div id="single-box-inner">
-					{% block body %}
-					<p> test paragraph </p>
-					{% endblock %}
-				</div>
+			<div id="left-container">
+				test left container
+			</div>
+			<div id="mid-container">
+				{% block body %}
+				<p> test paragraph </p>
+				{% endblock %}
+			</div>
+			<div id="right-container">
+				test right container
 			</div>
 
 		</div>

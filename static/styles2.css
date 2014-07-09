@@ -1,0 +1,19 @@
+/*.navbar-collapse {
+	background-color: #59CDAC;
+}
+*/
+
+.navbar-fixed-top {
+	background-color: #59CDAC;
+}
+
+
+/*.navbar-inverse {
+	background-color: #59CDAC;
+}*/
+
+
+/*Code below is to make the selected link display as yello instead of black */
+/*.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+	background-color: yellow;
+}*/
