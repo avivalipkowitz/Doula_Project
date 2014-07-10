@@ -11,6 +11,10 @@ app.config.from_object(__name__)
 def index():
 	return render_template('base.html')
 
+@app.route('/index')
+def home_page():
+	return render_template('index.html')
+
 
 @app.route('/login', methods = ['GET'])
 def show_login():

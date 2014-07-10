@@ -1,36 +1,33 @@
-<html>
-	<head>
-		<title>BirthTree</title>
-	</head>
+{% extends 'bootstrap-base.html' %}
 
-	<body>
-		<div class="login-bar">
-			<div id="login"><a href="/login">Login</a>
-			</div>
+{% block body %}
 
+<div id="index-top-box">
+  <div class="span12">
+  	<h2>Welcome to Birthy Doula App </h2>
+  	<p>How will you be using this website?</p>
+  </div>
+</div>  
+
+<div class="row" id="index-bottom-box">
+	<div class="span6" id="bottom-box-left">
+  		<div class="jumbotron">
+  			<h3>I'm a parent</h1>
+  			<p>I'm looking for a provider</p>
 		</div>
-		<div class="header"><img src="static/images/doula_header.jpg">
-			<a href="/logout">logout</a>
-			test header
+	<div class="span6" id="bottom-box-right">
+		<div class="jumbotron">
+			<h3>I'm a provider</h3>
+			<p>I'm looking for parents</p>
 		</div>
-		</div>
-		<div class="navbar">
-		</div>
+ 	</div>
+  
+</div>
 
-		<div class="container">
-			<div id="single-box-outer">
-				<div id="single-box-inner">
-					{% block body %}
-					<p> test paragraph </p>
-					{% endblock %}
-				</div>
-			</div>
 
-		</div>
 
-	</body>
-	
-	<source>
-	</source>
 
-</html>
+
+
+
+{% endblock %}

@@ -1,16 +1,36 @@
-/*.navbar-collapse {
-	background-color: #59CDAC;
-}
-*/
-
 .navbar-fixed-top {
 	background-color: #59CDAC;
 }
 
+dl dd {
+	display: inline-block;
+}
 
-/*.navbar-inverse {
-	background-color: #59CDAC;
-}*/
+#index-top-box {
+	top: 10px;
+	background-color: orange;
+
+}
+
+#index-bottom-box {
+	top: 200px;
+	background-color: green;
+}
+
+#index-bottom-box #bottom-box-left {
+	display: inline-block;
+	width: 350px;
+	left: 10px;
+	top: 10px;
+}
+
+#index-bottom-box #bottom-box-right {
+	display: inline-block;
+	width: 350px;
+	right: 10px;
+	top: 10px;
+}
+
 
 
 /*Code below is to make the selected link display as yello instead of black */

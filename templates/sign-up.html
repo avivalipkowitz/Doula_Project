@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'bootstrap-base.html' %}
 
 {% block body %}
 
@@ -7,10 +7,8 @@
 	<form action="login" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
 		<dl> 
-			<dt>First name:
-			<dd><input type="text" name="firstname">
-			<dt>Last name:
-			<dd><input type="text" name="lastname">
+			<dt>First name: <dd><input type="text" name="firstname">
+			<dt>Last name: <dd><input type="text" name="lastname">
 			<dt>Name of your practice (if you have one):
 			<dd><input type="text" name="practice">
 			<dt>Email:
