@@ -4,41 +4,6 @@
 
 	<h2>Sign Up</h2>
 	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
-	<form action="signup_doula" method="post">
-		<!--??? what do dl and dd and dt do? ??? -->
-		<dl> 
-			<dt>First name: <dd><input type="text" name="firstname">
-			<dt>Last name: <dd><input type="text" name="lastname">
-			<dt>Name of your practice (if you have one):
-			<dd><input type="text" name="practice">
-			<dt>Email:
-			<dd><input type="email" name="email">
-			<dt>Password:
-			<dd><input type="password" name="password">
-			<dt>Type your password again:
-			<dd><input type="password" name="password_again">
-			<dt>Phone number:
-			<dd><input type="tel" name="phone">
-			<dt>website:
-			<dd><input type="text" name="website">
-			<dt>Price range: From
-			<dd><input type="number" name="price_min">
-			<dt>To:
-			<dd><input type="number" name="price_max">
-			<dt>Give us some background about yourself:
-			<dd><input type="text" name="background">
-			<dt>What services do you provide?
-			<dd><input type="text" name="services">
-			<dt>Zipcode:
-			<dd><input type="text" name="zip">
-			<dt>Image??? How do you do this???
-<!-- 			<dd><input type="?" name="image"> -->
-
-			<dd><input type="submit" value="Login">
-		</dl>
-	</form>
-
-<!-- Not sure if I can actually combine these sign-ups for two different users on the same page... -->
 
 	<form action="signup_parent" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
@@ -73,7 +38,7 @@
 			<dt>Image??? How do you do this???
 			<dd><input type="file" name="image" accept="image/*">
 
-			<dd><input type="submit" value="Login">
+			<dd><input type="submit" value="Sign Up">
 		</dl>
 	</form>
 

@@ -1,10 +1,28 @@
 from flask import Flask, request, session, render_template, g, redirect, url_for, flash
 import jinja2
 import model
+import os
+from werkzeug.utils import secure_filename
+
+
+SECRET_KEY = "fish"
+
+# Following code is from flask.pocoo.org/docs/patterns/fileuploads
+UPLOAD_FOLDER = 'static/images/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
-SECRET_KEY = "fish"
 app.config.from_object(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #from flask fileuploads tutorial
+
+
+
+# for file uploads (for profile picture)
+# from flask tutorial on file uploads
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 
 @app.route('/')
@@ -33,14 +51,16 @@ def process_login():
 	print "user_login is", user_login
 
 	if not user_login:
-		print "invalid login"
+		flash("invalid login")
+		return redirect('/login')
 	else:
 		session['email'] = user_email
 		flash("You succesfully logged in!")
-	print "###############"
-	print "session is", session
+		print "###############"
+		print "session is", session
+		return redirect('/')
 
-	return redirect('/')
+		
 
 @app.route('/logout')
 def logout():
@@ -58,30 +78,74 @@ def logout():
 
 
 
-@app.route('/signup', methods = ['GET'])
+@app.route('/signup_doula', methods = ['GET'])
 def process_signup():
-	return render_template('sign-up.html')
+	return render_template('sign-up-doula.html')
 
 
-@app.route('/signup', methods = ['POST'])
+@app.route('/signup_doula', methods = ['POST'])
 def signup():
+	# code loosely taken from judgement.py on github
+	# form is coming from sign-up-doula.html
+	# is this where I should be checking that the password entries match?
 	f = request.form
+	
+	# JUST FOR PROFILE PICTURE
+	file = request.files['image']
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-	user_email = f.get('email')
-	user_password = f.get('password')
 
-	user_login = model.session.query(model.Doula).filter_by(email = user_email).filter_by(password = user_password).first()
+	email = f.get('email')
+	password = f.get('password')
+	first_name = f.get('firstname')
+	last_name = f.get('lastname')
+	practice_name = f.get('practice')
+	phone_number = f.get('phone')
+	website = f.get('website')
+	price_min = f.get('price_min')
+	price_max = f.get('price_max')
+	background_nar = f.get('background_nar')
+	services_nar = f.get('services')
+	zipcode = f.get('zip')
+	profile_pic = f.get('image')
 
-	print "*******************"
-	print "user_login is", user_login
 
-	if not user_login:
-		print "invalid login"
-	else:
-		session['email'] = user_email
-		flash("You succesfully logged in!")
+	doula = model.Doula(email = email, 
+						password = password, 
+						firstname = first_name,
+						lastname = last_name,
+						practice = practice_name,
+						phone = phone_number,
+						website = website,
+						price_min = price_min,
+						price_max = price_max,
+						background = background_nar,
+						services = services_nar,
+						image = filename,
+						zipcode = zipcode
+						)
+
+	model.session.add(doula)
+	model.session.commit()
+
+
+
 
 	return redirect('/')
+
+
+
+@app.route('/provider') #change this route to include the doula's <int:id> in the url
+def display_doula_profile():
+	return render_template('doula-profile.html')
+
+
+@app.route('/user') #change this route to include the parents's <int:id> in the url
+def display_user_profile():
+	return render_template('user-profile.html')
+
 
 
 

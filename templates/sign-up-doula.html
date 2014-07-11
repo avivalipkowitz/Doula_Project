@@ -1,0 +1,44 @@
+{% extends 'bootstrap-base.html' %}
+
+{% block body %}
+
+	<h2>Sign Up</h2>
+	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
+	<form action="signup_doula" enctype="multipart/form-data" method="post">
+		<!--??? what do dl and dd and dt do? ??? -->
+		<!-- Add do this a checklist of the services a doula might provide for doula_services table -->
+		<dl> 
+			<dt>First name: <dd><input type="text" name="firstname">
+			<dt>Last name: <dd><input type="text" name="lastname">
+			<dt>Name of your practice (if you have one):
+			<dd><input type="text" name="practice">
+			<dt>Email:
+			<dd><input type="email" name="email">
+			<dt>Password:
+			<dd><input type="password" name="password">
+			<dt>Type your password again:
+			<dd><input type="password" name="password_again">
+			<dt>Phone number:
+			<dd><input type="tel" name="phone">
+			<dt>website:
+			<dd><input type="text" name="website">
+			<dt>Price range: From
+			<dd><input type="number" name="price_min">
+			<dt>To:
+			<dd><input type="number" name="price_max">
+			<dt>Give us some background about yourself:
+			<dd><input type="text" name="background">
+			<dt>What services do you provide?
+			<dd><input type="text" name="services">
+			<dt>Zipcode:
+			<dd><input type="text" name="zip">
+			<dt>Upload a profile picture
+			<dd><input type="file" name="image" accept="image/*">
+
+			<dt>
+			<dd><input type="submit" value="Sign Up">
+		</dl>
+	</form>
+
+
+{% endblock %}

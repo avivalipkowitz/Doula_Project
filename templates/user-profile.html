@@ -1,0 +1,29 @@
+{% extends 'bootstrap-base.html' %}
+
+{% block body %}
+
+	<div class="row">
+  		<div class="span4" id="profile-column-left"> box 1: Profile picture 
+  			<div id="parent-profile-pic"> Doula profile pic </div>
+  		</div>
+
+  		<div class="span4" id="profile-column-middle"> box 2: main profile information 
+  			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
+        <!-- change first/last name to be a pseudonym? -->
+  			<h2> {{ firstname }} {{ lastname }}
+  			<h4> Due Date </h4> {{ duedate }}
+  			<h4> Zipcode </h4> {{ zipcode }}
+  			<h4> Price </h4> {{ price_range }}
+  			<h4> Background </h4> {{ background_nar }}
+  			<h4> Ideal Provider </h4> {{ ideal_nar }} 
+  		</div>
+
+  		<div class="span4" id="profile-column-right"> box 3: suggestions area for similar doulas </div>
+  			<div> doula1 </div>
+  			<div> doula2 </div>
+  			<div> doula3 </div>
+	</div>
+
+
+
+{% endblock %}
