@@ -1,0 +1,56 @@
+build html templates
+	index
+	login
+	sign-up doulas
+		make sure that password matches password_again
+		add in checklist of all the services they might offer, to store in doula_services table
+	sign-up parents
+		make sure that password matches password_again
+	search
+	search results
+	parent profile
+	about
+	contact
+	reviews
+build fancy components
+	calendar of availability
+	personality maps
+	messaging system
+database
+	do mongo tutuorial
+	decide on database structure
+	design architecture
+	doula table
+	parent table
+	doula services table
+	get test cases loaded
+	populate tables with fake data
+
+style
+	[DONE] create banner
+	[DONE] download bootstrap template
+	adjust bootstrap to my settings
+		change the color of the nav bar
+	set index styles
+		get parent/doula jumbotrons side by side 
+	set login styles 
+	set signup styles 
+	set doula profile styles
+	set parent profile styles
+	set search styles
+	set search result styles
+
+search
+	level 1: simple search by zipcode (fina all doulas in that zip)
+	level 2: find all doulas within 10 miles of given zip
+	level 3: advanced search - find all doulas with given characteristics from doula table
+	level 4: find all doulas with given skill set from doula services table
+	level 5: map results
+
+branding
+	get a name
+	get a logo
+	remake banner
+	[DONE] decide on color scheme
+
+	
