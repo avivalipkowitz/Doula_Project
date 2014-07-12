@@ -2,14 +2,16 @@
 
 {% block body %}
 
-	<h2>Sign Up</h2>
+	<h2>Sign Up as a Parent</h2>
 	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
 
 	<form action="signup_parent" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
 		<dl> 
-			<dt>First name: <dd><input type="text" name="firstname">
-			<dt>Last name: <dd><input type="text" name="lastname">
+			<dt>First name: 
+			<dd><input type="text" name="firstname">
+			<dt>Last name: 
+			<dd><input type="text" name="lastname">
 			<dt>Display name for profile page:
 			<dd><input type="text" name="display_name">
 			<dt>Email:
@@ -20,6 +22,8 @@
 			<dd><input type="password" name="password_again">
 			<dt>Zipcode:
 			<dd><input type="text" name="zip">
+			<dt>When is your baby due?:
+			<dd><input type="date" name="due_date">
 			<dt>How much are you looking to spend on your doula? From:
 			<dd><input type="number" name="price_min">
 			<dt>To:
@@ -35,7 +39,7 @@
   			<dd><option value="doulas">Doulas only</option>
   			<dd><option value="none">No one, I'm just here to contact others</option>
   			</select>
-			<dt>Image??? How do you do this???
+			<dt>Upload a profile picture
 			<dd><input type="file" name="image" accept="image/*">
 
 			<dd><input type="submit" value="Sign Up">

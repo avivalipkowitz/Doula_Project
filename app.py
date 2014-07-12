@@ -25,14 +25,15 @@ def allowed_file(filename):
 
 
 
-@app.route('/')
-def index():
-	return render_template('base.html')
 
-@app.route('/index')
+
+@app.route('/')
 def home_page():
 	return render_template('index.html')
 
+@app.route('/base_template')
+def index():
+	return render_template('base.html')
 
 @app.route('/login', methods = ['GET'])
 def show_login():
@@ -79,18 +80,21 @@ def logout():
 
 
 @app.route('/signup_doula', methods = ['GET'])
-def process_signup():
+def signup_doula():
 	return render_template('sign-up-doula.html')
 
 
 @app.route('/signup_doula', methods = ['POST'])
-def signup():
+def process_signup_doula():
 	# code loosely taken from judgement.py on github
 	# form is coming from sign-up-doula.html
 	# is this where I should be checking that the password entries match?
 	f = request.form
 	
 	# JUST FOR PROFILE PICTURE
+	# Will have to move this code to below the commit, so that i can save the 
+	# user first before saving as (usertype/id#) 
+
 	file = request.files['image']
 	if file and allowed_file(file.filename):
 		filename = secure_filename(file.filename)
@@ -109,7 +113,7 @@ def signup():
 	background_nar = f.get('background_nar')
 	services_nar = f.get('services')
 	zipcode = f.get('zip')
-	profile_pic = f.get('image')
+
 
 
 	doula = model.Doula(email = email, 
@@ -130,14 +134,61 @@ def signup():
 	model.session.add(doula)
 	model.session.commit()
 
+	return redirect('/')
+
+@app.route('/signup_parent', methods = ['GET'])
+def signup_parent():
+	return render_template('sign-up-parent.html')
 
 
+@app.route('/signup_parent', methods = ['POST'])
+def process_signup_parent():
+	# code loosely taken from judgement.py on github
+	# form is coming from sign-up-doula.html
+	# is this where I should be checking that the password entries match?
+	f = request.form
+	
+	# JUST FOR PROFILE PICTURE
+	file = request.files['image']
+	if file and allowed_file(file.filename):
+		filename = secure_filename(file.filename)
+		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+	email = f.get('email')
+	password = f.get('password')
+	first_name = f.get('firstname')
+	last_name = f.get('lastname')
+	display_name = f.get('display_name')
+	zipcode = f.get('zip')
+	due_date = f.get('due_date')
+	price_min = f.get('price_min')
+	price_max = f.get('price_max')
+	background_nar = f.get('background_nar')
+	ideal_doula_nar = f.get('services')
+	visibility = f.get('visibility')
+	profile_pic = f.get('image')
+
+	parent = model.Parent(email = email, 
+						password = password, 
+						firstname = first_name,
+						lastname = last_name,
+						display_name = display_name,
+						due_date = due_date,
+						zipcode = zipcode,
+						price_min = price_min,
+						price_max = price_max,
+						background = background_nar,
+						ideal_doula_nar = ideal_doula_nar,
+						image = filename
+						)
+
+	model.session.add(parent)
+	model.session.commit()
 
 	return redirect('/')
 
 
-
-@app.route('/provider') #change this route to include the doula's <int:id> in the url
+@app.route('/doula') #change this route to include the doula's <int:id> in the url
 def display_doula_profile():
 	return render_template('doula-profile.html')
 

@@ -58,7 +58,16 @@
       <div class="banner">
         <img src="static/images/doula-header-narrow.jpg">
       </div>
-
+      <!-- ADD IN SPOT FOR FLASH MESSAGES HERE -->
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
       <div class="starter-template">
         {% block body %}
         
