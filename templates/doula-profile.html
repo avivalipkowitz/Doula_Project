@@ -2,28 +2,35 @@
 
 {% block body %}
 
+<div class="container">
 	<div class="row">
-  		<div class="span4" id="profile-column-left"> box 1: Profile picture and calendar 
-  			<div id="doula-profile-pic"> Doula profile pic </div>
-  			<div id="calendar"> Calendar of availability </div>
+  		<div class="col-md-3 col-sm-4" id="profile-column-left"> box 1: Profile picture and calendar 
+  			<div id="doula-profile-pic"> <img width="150" src="/static/images/uploads/AvivaLipkowitz.jpg"> 
+          <p>Doula profile pic</p>
+        </div>
+  			<div id="calendar"> 
+          <img src="/static/images/calendar.png" width="150">
+          <p>Calendar of availability</p>
+        </div>
   		</div>
 
-  		<div class="span4" id="profile-column-middle"> box 2: main profile information 
+  		<div class="col-md-6 col-sm-8" id="profile-column-middle"> box 2: main profile information 
   			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
-  			<h2> {{ firstname }} {{ lastname }}
-  			<h4> Website </h4> {{ website }}
-  			<h4> Phone </h4> {{ tel }}
-  			<h4> Price </h4> {{ price_range }}
-  			<h4> Background </h4> {{ background_nar }}
-  			<h4> Services Provided </h4> {{ services_nar }} 
+  			<h2> {{ doula.firstname }} {{ doula.lastname }}
+  			<h4> Website </h4> {{ doula.website }}
+  			<h4> Phone </h4> {{ doula.phone }}
+  			<h4> Price </h4> ${{ doula.price_min }} to ${{ doula.price_max }}
+  			<h4> Background </h4> {{ doula.background }}
+  			<h4> Services Provided </h4> {{ doula.services }} 
+  			<h4> Location </h4> Zip: {{ doula.zipcode }}
   		</div>
 
-  		<div class="span4" id="profile-column-right"> box 3: suggestions area for similar doulas </div>
+  		<div class="col-md-3 col-sm-12" id="profile-column-right"> box 3: suggestions area for similar doulas </div>
   			<div> doula1 </div>
   			<div> doula2 </div>
   			<div> doula3 </div>
 	</div>
-
+</div>
 
 
 {% endblock %}

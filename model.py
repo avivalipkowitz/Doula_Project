@@ -26,20 +26,7 @@ Base.query = session.query_property()
 # Class declarations
 # Add a User(Base) class that has all common attributes between 
 # Parent and Doula, so that this doesn't have to be replicated
-class User(Base):
-	# QUESTION does this need a table name? No, right? Just a class?
-	__tablename__ = "users"
 
-	id = Column(Integer, primary_key = True) #does this need to be in the child class?
-	email = Column(String(64), nullable = False)
-	password = Column(String(64), nullable = False)
-	firstname = Column(String(64), nullable = True)
-	lastname = Column(String(64), nullable = True)
-	price_min = Column(Integer, nullable = True)
-	price_max = Column(Integer, nullable = True)
-	background = Column(Text, nullable = True)
-	image = Column(String(64), nullable = True)
-	zipcode = Column(String(64), nullable = True)
 
 class Doula(Base):
 	__tablename__ = "doulas"
@@ -64,19 +51,48 @@ class Doula(Base):
 	services = Column(Text, nullable = True)
 	reviews = Column(String(200), nullable = True)
 
+
+	def is_authenticated(self):
+		return True
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
+
+
+
+
 class Parent(Base):
 	__tablename__ = "parents"
+
+	def is_active(self):
+		return True
+
+	def is_anonymous(self):
+		return False
+
+	def get_id(self):
+		return unicode(self.id)
+
 
 	id = Column(Integer, primary_key = True) #does this need to be in the child class?
 	email = Column(String(64), nullable = False)
 	password = Column(String(64), nullable = False)
 	firstname = Column(String(64), nullable = True)
 	lastname = Column(String(64), nullable = True)
+	display_name = Column(String(64), nullable = True)
 	price_min = Column(Integer, nullable = True)
 	price_max = Column(Integer, nullable = True)
 	background = Column(Text, nullable = True)
 	image = Column(String(64), nullable = True)
 	zipcode = Column(String(64), nullable = True)
+
+
 
 
 

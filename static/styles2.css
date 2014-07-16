@@ -32,8 +32,16 @@ dl dd {
 }
 
 
-
-/*Code below is to make the selected link display as yello instead of black */
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
-	background-color: yellow;
+.banner {
+	left: 50%
 }
+
+#profile-column-left {
+	text-align:left;
+}
+
+#profile-column-middle {
+	text-align:left;
+}
+
+

@@ -1,4 +1,5 @@
 from flask import Flask, request, session, render_template, g, redirect, url_for, flash
+from flask.ext.login import LoginManager, login_required, logout_user, login_user
 import jinja2
 import model
 import os
@@ -15,6 +16,10 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #from flask fileuploads tutorial
 
+# Flask login package turtorial (aka Rob) (so far just doing one user type "Doula")
+login_manager = LoginManager() #from flask-login tutorial
+login_manager.init_app(app)
+login_manager.login_view = '/login'
 
 
 # for file uploads (for profile picture)
@@ -23,6 +28,18 @@ def allowed_file(filename):
 	return '.' in filename and \
 		filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+
+#only setting this up for doulas at the moment
+@login_manager.user_loader
+def load_user(doula_id):
+	# query user database (user id has to be unicode)
+	# except that i think i'm getting the email, so i'll probably have to add a step where 
+	# I'm getting the user_id (or Doula_id, as the case may be)
+	# fix to be clearer on the exceptions to raise specific errors
+	# try:
+	return model.session.query(model.Doula).get(doula_id)
+	# except:
+	# 	return None
 
 
 
@@ -37,46 +54,42 @@ def index():
 
 @app.route('/login', methods = ['GET'])
 def show_login():
-	return render_template('login.html')
+	print "LOGIN ARGS:", request.args
+	next = request.args.get('next')
+	return render_template('login.html', next = next)
 
 @app.route('/login', methods = ['POST'])
 def process_login():
 	f = request.form
+	print "LOGIN ARGS:", request.args
 
 	user_email = f.get('email')
 	user_password = f.get('password')
 
 	user_login = model.session.query(model.Doula).filter_by(email = user_email).filter_by(password = user_password).first()
 
-	print "*******************"
-	print "user_login is", user_login
-
 	if not user_login:
 		flash("invalid login")
 		return redirect('/login')
 	else:
-		session['email'] = user_email
+		login_user(user_login) # this saves the user info in the session
 		flash("You succesfully logged in!")
-		print "###############"
-		print "session is", session
-		return redirect('/')
+
+		return redirect(request.args.get('next')  or ('/'))
 
 		
 
 @app.route('/logout')
+@login_required
+# i'm adding the login_required thing so this should obviate the
+# error thingy
 def logout():
 	## FIX THIS SO YOU CAN'T BREAK IT BY LOGGING OUT
 	## WHEN YOU HAVEN'T LOGGED IN!
-	if not session['email']:
-		flash("You have to log in before you log out")
-		return redirect('/')
-	else:
-		del session['email']
-	print "###############"
-	print "you succesfully logged out"
-	print "session is", session
+	### except i just adjusted this with the flask login package, so maybe problem fixed?
+	### so add a button that redirects to '/logout'
+	logout_user()
 	return redirect('/')
-
 
 
 @app.route('/signup_doula', methods = ['GET'])
@@ -89,20 +102,16 @@ def process_signup_doula():
 	# code loosely taken from judgement.py on github
 	# form is coming from sign-up-doula.html
 	# is this where I should be checking that the password entries match?
+	# Should also check to make sure that user doesn't already exist
 	f = request.form
 	
 	# JUST FOR PROFILE PICTURE
 	# Will have to move this code to below the commit, so that i can save the 
 	# user first before saving as (usertype/id#) 
 
-	file = request.files['image']
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
-
-	email = f.get('email')
 	password = f.get('password')
+	password_again = f.get('password_again')
+	email = f.get('email')
 	first_name = f.get('firstname')
 	last_name = f.get('lastname')
 	practice_name = f.get('practice')
@@ -114,27 +123,43 @@ def process_signup_doula():
 	services_nar = f.get('services')
 	zipcode = f.get('zip')
 
+	# check that passwords match
+	if password != password_again:
+		flash("Passwords do not match. Please enter your password again.")
+		return redirect('/signup_doula')
 
 
-	doula = model.Doula(email = email, 
-						password = password, 
-						firstname = first_name,
-						lastname = last_name,
-						practice = practice_name,
-						phone = phone_number,
-						website = website,
-						price_min = price_min,
-						price_max = price_max,
-						background = background_nar,
-						services = services_nar,
-						image = filename,
-						zipcode = zipcode
-						)
+	# check to see if user already exists
+	if model.session.query(model.Doula).get('email') != None:
+		flash("Email already exists. Login with that email, or sign up with a different email.")
+		return redirect('/signup_doula')
 
-	model.session.add(doula)
-	model.session.commit()
+	else:
+		doula = model.Doula(email = email, 
+							password = password, 
+							firstname = first_name,
+							lastname = last_name,
+							practice = practice_name,
+							phone = phone_number,
+							website = website,
+							price_min = price_min,
+							price_max = price_max,
+							background = background_nar,
+							services = services_nar,
+							image = filename,
+							zipcode = zipcode
+							)
 
-	return redirect('/')
+		# save filename as combo of usertype and id. have to save this for the end so that the id is generated
+		file = request.files['image']
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+		model.session.add(doula)
+		model.session.commit()
+
+		return redirect('/')
 
 @app.route('/signup_parent', methods = ['GET'])
 def signup_parent():
@@ -156,6 +181,7 @@ def process_signup_parent():
 
 	email = f.get('email')
 	password = f.get('password')
+	password_again = f.get('password_again')
 	first_name = f.get('firstname')
 	last_name = f.get('lastname')
 	display_name = f.get('display_name')
@@ -166,36 +192,49 @@ def process_signup_parent():
 	background_nar = f.get('background_nar')
 	ideal_doula_nar = f.get('services')
 	visibility = f.get('visibility')
-	profile_pic = f.get('image')
 
-	parent = model.Parent(email = email, 
-						password = password, 
-						firstname = first_name,
-						lastname = last_name,
-						display_name = display_name,
-						due_date = due_date,
-						zipcode = zipcode,
-						price_min = price_min,
-						price_max = price_max,
-						background = background_nar,
-						ideal_doula_nar = ideal_doula_nar,
-						image = filename
-						)
+	if password != password_again:
+		flash("Passwords do not match. Please enter your password again.")
+		return redirect('/signup_doula')
 
-	model.session.add(parent)
-	model.session.commit()
+	else:
+		parent = model.Parent(email = email, 
+							password = password, 
+							firstname = first_name,
+							lastname = last_name,
+							display_name = display_name,
+							due_date = due_date,
+							zipcode = zipcode,
+							price_min = price_min,
+							price_max = price_max,
+							background = background_nar,
+							ideal_doula_nar = ideal_doula_nar,
+							visibility = visibility,
+							image = filename
+							)
 
-	return redirect('/')
+		model.session.add(parent)
+		model.session.commit()
+
+		return redirect('/')
 
 
-@app.route('/doula') #change this route to include the doula's <int:id> in the url
-def display_doula_profile():
-	return render_template('doula-profile.html')
+@app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
+@login_required
+def display_doula_profile(id):
+	doula = model.session.query(model.Doula).get(id)
+
+	return render_template('doula-profile.html', doula = doula)
 
 
 @app.route('/user') #change this route to include the parents's <int:id> in the url
+@login_required
 def display_user_profile():
 	return render_template('user-profile.html')
+
+
+
+
 
 
 

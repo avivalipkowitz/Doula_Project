@@ -5,7 +5,7 @@
 	<h2>Sign Up as a Parent</h2>
 	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
 
-	<form action="signup_parent" method="post">
+	<form action="signup_parent" enctype="multipart/form-data" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
 		<dl> 
 			<dt>First name: 

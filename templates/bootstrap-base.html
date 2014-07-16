@@ -6,20 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <meta name="author" content="DoulaHoop">
+    <link rel="icon" href="/static/images/tiny-kitten.jpg">
 
-    <title>Doula App</title>
+    <title>DoulaHoop</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="static/bootstrap/css/starter-template.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/starter-template.css" rel="stylesheet">
 
 
     <!-- Custom styles for this doula app that will overwrite the other two stylesheets  -->
-    <link href="static/styles2.css" rel="stylesheet">
+    <link href="/static/styles2.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     
@@ -42,13 +42,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
         </div>
         <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+          <ul class="navbar-brand">
+            <li><a href="/"><img src="/static/images/tiny-kitten.png"></a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar %}
+            <li><a href="/">Sign Up!</a></li>
+            <!-- HOLD ON! following code should only exist if page requires log-in. need to change this -->
+            <li><a href="/logout">Logout</a></li>
+            <!-- HOLD ON! following code should only exist if user is not logged in yet. need to change the template up-->
+            <li><a href="/login">Login</a></li>
+            {% endblock %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -56,7 +62,7 @@
 
     <div class="container">
       <div class="banner">
-        <img src="static/images/doula-header-narrow.jpg">
+        <img src="/static/images/doulahoop_header.jpg">
       </div>
       <!-- ADD IN SPOT FOR FLASH MESSAGES HERE -->
       {% with messages = get_flashed_messages() %}
