@@ -4,6 +4,7 @@ import jinja2
 import model
 import os
 from werkzeug.utils import secure_filename
+import datetime
 
 
 SECRET_KEY = "fish"
@@ -27,6 +28,9 @@ login_manager.login_view = '/login'
 def allowed_file(filename):
 	return '.' in filename and \
 		filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+def file_extension(filename):
+	return filename.split('.')[-1]
 
 
 #only setting this up for doulas at the moment
@@ -109,6 +113,7 @@ def process_signup_doula():
 	# Will have to move this code to below the commit, so that i can save the 
 	# user first before saving as (usertype/id#) 
 
+
 	password = f.get('password')
 	password_again = f.get('password_again')
 	email = f.get('email')
@@ -146,18 +151,24 @@ def process_signup_doula():
 							price_max = price_max,
 							background = background_nar,
 							services = services_nar,
-							image = filename,
 							zipcode = zipcode
 							)
 
-		# save filename as combo of usertype and id. have to save this for the end so that the id is generated
-		file = request.files['image']
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		
+
 
 		model.session.add(doula)
 		model.session.commit()
+		
+		# save filename as combo of usertype and id. have to save this for the end so that the id is generated
+		file = request.files['image']
+		
+		if file and allowed_file(file.filename):
+			filename = "%s_%s.%s" % ("doula", doula.id, file_extension(file.filename))
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+			doula.image = filename
+			model.session.commit()	
 
 		return redirect('/')
 
@@ -174,10 +185,6 @@ def process_signup_parent():
 	f = request.form
 	
 	# JUST FOR PROFILE PICTURE
-	file = request.files['image']
-	if file and allowed_file(file.filename):
-		filename = secure_filename(file.filename)
-		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 	email = f.get('email')
 	password = f.get('password')
@@ -186,16 +193,28 @@ def process_signup_parent():
 	last_name = f.get('lastname')
 	display_name = f.get('display_name')
 	zipcode = f.get('zip')
-	due_date = f.get('due_date')
 	price_min = f.get('price_min')
 	price_max = f.get('price_max')
-	background_nar = f.get('background_nar')
-	ideal_doula_nar = f.get('services')
+	background_nar = f.get('background')
+	ideal_doula_nar = f.get('ideal_nar')
 	visibility = f.get('visibility')
 
+	# this is coming in as unicode--change to DateTime
+	unicode_due_date = f.get('due_date')
+	due_date = datetime.datetime.strptime(unicode_due_date, "%Y-%m-%d")
+
+
+	#check that passwords match
 	if password != password_again:
 		flash("Passwords do not match. Please enter your password again.")
 		return redirect('/signup_doula')
+
+	
+	# check to see if user already exists
+	elif model.session.query(model.Parent).get('email') != None:
+		flash("Email already exists. Login with that email, or sign up with a different email.")
+		return redirect('/signup_parent')
+
 
 	else:
 		parent = model.Parent(email = email, 
@@ -209,35 +228,58 @@ def process_signup_parent():
 							price_max = price_max,
 							background = background_nar,
 							ideal_doula_nar = ideal_doula_nar,
-							visibility = visibility,
-							image = filename
+							visibility = visibility
 							)
 
 		model.session.add(parent)
 		model.session.commit()
 
-		return redirect('/')
+		# save filename as combo of usertype and id. have to save this for the end so that the id is generated
+		file = request.files['image']
+		
+		if file and allowed_file(file.filename):
+			filename = "%s_%s.%s" % ("parent", parent.id, file_extension(file.filename))
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+			parent.image = filename
+			model.session.commit()	
+
+		return redirect('/login')
+
 
 
 @app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
-@login_required
+# @login_required
 def display_doula_profile(id):
 	doula = model.session.query(model.Doula).get(id)
 
 	return render_template('doula-profile.html', doula = doula)
 
 
-@app.route('/user') #change this route to include the parents's <int:id> in the url
+@app.route('/user/<int:id>') #change this route to include the parents's <int:id> in the url
 @login_required
-def display_user_profile():
-	return render_template('user-profile.html')
+def display_user_profile(id):
+	parent = model.session.query(model.Parent).get(id)
+
+	due_date = parent.due_date.strftime("%m/%d/%y")
+
+	return render_template('user-profile.html', parent = parent,
+												due_date = due_date)
 
 
 
+@app.route('/search', methods = ['GET'])
+def search():
+	return render_template('search.html')
 
+@app.route('/search', methods = ['POST'])
+def display_search_results():
+	f = request.form
 
-
-
+	zip = f.get(zip_search)
+	
+	doula_list = model.session.query(model.Doula).all(zip)
+	return render_template('search-results.html')
 
 
 

@@ -12,7 +12,7 @@ ENGINE = None
 Session = None
 
 # from ratings model.py
-engine = create_engine("sqlite:///doulatree.db", echo = False)
+engine = create_engine("sqlite:///doulahoop.db", echo = False)
 session = scoped_session(sessionmaker(bind = engine,
 									  autocommit = False,
 									  autoflush = False))
@@ -91,14 +91,10 @@ class Parent(Base):
 	background = Column(Text, nullable = True)
 	image = Column(String(64), nullable = True)
 	zipcode = Column(String(64), nullable = True)
-
-
-
-
-
 	display_name = Column(String(64), nullable = True)
 	ideal_doula_nar = Column(Text, nullable = True)
 	visibility = Column(String(64), nullable = True)
+	due_date = Column(DateTime, nullable = True)
 
 
 def main():

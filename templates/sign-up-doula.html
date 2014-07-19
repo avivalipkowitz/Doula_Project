@@ -1,4 +1,4 @@
-{% extends 'bootstrap-base.html' %}
+{% extends 'logged-out-base.html' %}
 
 {% block body %}
 
@@ -7,9 +7,14 @@
 	<form action="signup_doula" enctype="multipart/form-data" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
 		<!-- Add do this a checklist of the services a doula might provide for doula_services table -->
-		<dl> 
-			<dt>First name: <dd><input type="text" name="firstname">
-			<dt>Last name: <dd><input type="text" name="lastname">
+		<ul class="signup-list"> 
+			<li class="form-wrap"><div class="form-left">First name:</div>
+				<div class="form-right"><input type="text" name="firstname"></div>
+			</li>
+			<li class="form-wrap"><div class="form-left">Some really long category name:</div>
+				<div class="form-right"><input type="text" name="firstname"></div>
+			</li>
+			<p><dt>Last name: <dd><input type="text" name="lastname"></p>
 			<dt>Name of your practice (if you have one):
 			<dd><input type="text" name="practice">
 			<dt>Email:
@@ -27,9 +32,9 @@
 			<dt>To:
 			<dd><input type="number" name="price_max">
 			<dt>Give us some background about yourself:
-			<dd><input type="text" name="background">
+			<dd><input type="text" name="background" style="width:300px; height:100px">
 			<dt>What services do you provide?
-			<dd><input type="text" name="services">
+			<dd><input type="text" name="services" style="width:300px; height:100px">
 			<dt>Zipcode:
 			<dd><input type="text" name="zip">
 			<dt>Upload a profile picture

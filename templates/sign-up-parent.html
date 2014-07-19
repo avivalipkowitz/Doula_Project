@@ -1,4 +1,4 @@
-{% extends 'bootstrap-base.html' %}
+{% extends 'logged-out-base.html' %}
 
 {% block body %}
 
@@ -29,9 +29,9 @@
 			<dt>To:
 			<dd><input type="number" name="price_max">
 			<dt>Give us some background about yourself:
-			<dd><input type="text" name="background">
+			<dd><input type="text" name="background" style="width:300px; height:100px">
 			<dt>Describe your ideal doula. Any specific services you're looking for? Experience level?
-			<dd><input type="text" name="ideal_nar">
+			<dd><input type="text" name="ideal_nar" style="width:300px; height:100px">
 			<dt>Visibility settings:
 			<dt>Who would you like to be able to see your profile?
 			<select name="visibility">
@@ -41,14 +41,10 @@
   			</select>
 			<dt>Upload a profile picture
 			<dd><input type="file" name="image" accept="image/*">
-
+			<dt>
 			<dd><input type="submit" value="Sign Up">
 		</dl>
 	</form>
-
-
-
-
 
 
 {% endblock %}

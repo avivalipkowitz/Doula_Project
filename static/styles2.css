@@ -7,33 +7,45 @@ dl dd {
 }
 
 #index-top-box {
+	text-align: center;
 	top: 10px;
-	background-color: orange;
 
 }
+
+#index-top-box h2 {
+	font-weight: lighter;
+	color: #BBB;
+}
+
+
 
 #index-bottom-box {
 	top: 200px;
-	background-color: green;
+	text-align: center;
 }
 
-#index-bottom-box #bottom-box-left {
+#index-bottom-box div {
 	display: inline-block;
 	width: 350px;
 	left: 10px;
 	top: 10px;
 }
 
-#index-bottom-box #bottom-box-right {
-	display: inline-block;
-	width: 350px;
-	right: 10px;
-	top: 10px;
+#index-bottom-box div div {
+	background-color: #307B7B;
+	color: #EEF5F5;
 }
 
+.jumbotron {
+	border: white;
+}
+
+#index-bottom-box a {
+
+}
 
 .banner {
-	left: 50%
+	left: 500;
 }
 
 #profile-column-left {
@@ -42,6 +54,44 @@ dl dd {
 
 #profile-column-middle {
 	text-align:left;
+}
+
+#profile-column-right {
+	text-align:left;
+	background-color: #D6DCDC;
+}
+
+.doula-suggestion {
+	text-align: left
+}
+
+/*form dl dt {
+	display: inline-block;
+}*/
+
+.form-wrap {
+	padding: 0px;
+}
+
+.signup-list {
+	list-style-type: none;
+}
+
+.form-left{
+	text-align:left;
+	display:inline-block;
+	width:250px;
+	padding:5px;
+
+}
+
+.form-right {
+	display:inline-block;
+	margin-left: 100px;
+}
+
+container {
+	margin: 0px;
 }
 
 

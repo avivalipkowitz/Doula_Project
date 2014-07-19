@@ -1,29 +1,74 @@
-{% extends 'bootstrap-base.html' %}
+{% extends 'logged-in-base.html' %}
+
 
 {% block body %}
 
-	<div class="row">
-  		<div class="span4" id="profile-column-left"> box 1: Profile picture 
-  			<div id="parent-profile-pic"> Doula profile pic </div>
-  		</div>
+<div class="container">
+  <div class="row">
+      <div class="col-md-3 col-sm-4" id="profile-column-left"> box 1: Profile picture and Due date calendar
+        <div id="parent-profile-pic"> <img width="150" src="/static/images/uploads/parent_{{ parent.id }}.jpg"> 
+          <p>Parent profile pic</p>
+        </div>
+        <div id="calendar"> 
+          <p>Due Date: {{ due_date }}</p>
+        </div>
+      </div>
 
-  		<div class="span4" id="profile-column-middle"> box 2: main profile information 
-  			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
-        <!-- change first/last name to be a pseudonym? -->
-  			<h2> {{ firstname }} {{ lastname }}
-  			<h4> Due Date </h4> {{ duedate }}
-  			<h4> Zipcode </h4> {{ zipcode }}
-  			<h4> Price </h4> {{ price_range }}
-  			<h4> Background </h4> {{ background_nar }}
-  			<h4> Ideal Provider </h4> {{ ideal_nar }} 
-  		</div>
+      <div class="col-md-6 col-sm-8" id="profile-column-middle"> box 2: main profile information 
+        <!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
+        <h2> {{ parent.firstname }} {{ parent.lastname }}
+        <h4> Due Date </h4> {{ parent.duedate }}
+        <h4> Zipcode </h4> {{ parent.zipcode }}
+        <h4> Price </h4> {{ parent.price_min }} to {{ parent.price_max }}
+        <h4> Background </h4> {{ parent.background }}
+        <h4> Ideal Provider </h4> {{ parent.ideal_doula_nar }} 
+      </div>
 
-  		<div class="span4" id="profile-column-right"> box 3: suggestions area for similar doulas </div>
-  			<div> doula1 </div>
-  			<div> doula2 </div>
-  			<div> doula3 </div>
-	</div>
+      <div class="col-md-3 col-sm-12" id="profile-column-right">
+        <p>box 3: suggestions area for similar parents</p>
+        <div class="parent-suggestion col-md-12 col-sm-4">
+          <div class="col-sm-6" id="suggestion-1-thumb"> 
+            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
+            <p>Parent1</p>
+          </div>
+          <div class="col-sm-6" id="suggestion-1-desc"> 
+            <p>Name</p>
+            <p>location<p>
+          </div>
+        </div>
 
+        <div class="parent-suggestion col-md-12 col-sm-4">
+          <div class="col-sm-6" id="suggestion-2-thumb"> 
+            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
+            <p>Parent2</p>
+          </div>
+          <div class="col-sm-6" id="suggestion-2-desc"> 
+            <p>Name</p>
+            <p>location<p>
+          </div>
+        </div>
+        <div class="parent-suggestion col-md-12 col-sm-4">
+          <div class="col-sm-6" id="suggestion-3-thumb"> 
+            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
+            <p>Parent3</p>
+          </div>
+          <div class="col-sm-6" id="suggestion-3-desc"> 
+            <p>Name</p>
+            <p>location<p>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
 
 
 {% endblock %}
+
+{% block script %}
+    <script>  
+      $(function() {
+        $( "#calendar" ).datepicker({ defaultDate: "{{ due_date }}" });
+      });
+    </script>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends 'logged-out-base.html' %}
+
+
+{% block body %}
+<h2> Search bar here </h2>
+<form action="/search" method="post">
+		<!--??? what do dl and dd and dt do? ??? -->
+		<dl> 
+			<dt>Search for doulas by zipcode:
+			<dd><input type="search" name="zip_search" placeholder="zipcode">
+			<dd><input type="submit" value="Search">
+		</dl>
+	</form>
+
+{% endblock %}

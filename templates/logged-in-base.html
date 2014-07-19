@@ -1,0 +1,11 @@
+<!-- For pages that require log in to view -->
+{% extends 'bootstrap-base.html' %}
+
+
+{% block navbar %}
+
+	<li><a>Logged in as {{ parent.email }}</a></li>
+	<li><a href="/logout">Logout</a></li>
+	<li><a href="">Settings</a></li>
+
+{% endblock %}

@@ -21,6 +21,11 @@
     <!-- Custom styles for this doula app that will overwrite the other two stylesheets  -->
     <link href="/static/styles2.css" rel="stylesheet">
 
+
+    <!-- this is from jquery datepicker page -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+        
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     
 
@@ -88,5 +93,17 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- this is from jquery datepicker page -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    
+    {% block script %}
+    {% endblock %}
+    <script>  
+      $(function() {
+        $( "#datepicker" ).datepicker();
+      });
+    </script>
   </body>
 </html>
