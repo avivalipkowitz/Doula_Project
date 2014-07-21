@@ -276,10 +276,10 @@ def search():
 def display_search_results():
 	f = request.form
 
-	zip = f.get(zip_search)
+	doula_zip = f.get('doula_zip_search')
 	
-	doula_list = model.session.query(model.Doula).all(zip)
-	return render_template('search-results.html')
+	doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
+	return render_template('search-results.html', doula_list = doula_list)
 
 
 

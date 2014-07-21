@@ -7,43 +7,81 @@
 
 	<form action="signup_parent" enctype="multipart/form-data" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
-		<dl> 
-			<dt>First name: 
-			<dd><input type="text" name="firstname">
-			<dt>Last name: 
-			<dd><input type="text" name="lastname">
-			<dt>Display name for profile page:
-			<dd><input type="text" name="display_name">
-			<dt>Email:
-			<dd><input type="email" name="email">
-			<dt>Password:
-			<dd><input type="password" name="password">
-			<dt>Type your password again:
-			<dd><input type="password" name="password_again">
-			<dt>Zipcode:
-			<dd><input type="text" name="zip">
-			<dt>When is your baby due?:
-			<dd><input type="date" name="due_date">
-			<dt>How much are you looking to spend on your doula? From:
-			<dd><input type="number" name="price_min">
-			<dt>To:
-			<dd><input type="number" name="price_max">
-			<dt>Give us some background about yourself:
-			<dd><input type="text" name="background" style="width:300px; height:100px">
-			<dt>Describe your ideal doula. Any specific services you're looking for? Experience level?
-			<dd><input type="text" name="ideal_nar" style="width:300px; height:100px">
-			<dt>Visibility settings:
-			<dt>Who would you like to be able to see your profile?
-			<select name="visibility">
-			<dd><option value="all">Doulas and other parents</option>
-  			<dd><option value="doulas">Doulas only</option>
-  			<dd><option value="none">No one, I'm just here to contact others</option>
-  			</select>
-			<dt>Upload a profile picture
-			<dd><input type="file" name="image" accept="image/*">
-			<dt>
-			<dd><input type="submit" value="Sign Up">
-		</dl>
+		<ul class="signup-list">  
+			<li class="form-wrap">
+				<div class="form-left">First name:</div>
+				<div class="form-right"><input type="text" name="firstname"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Last name:</div>
+				<div class="form-right"><input type="text" name="lastname"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Display name for profile page:</div>
+				<div class="form-right"><input type="text" name="display_name"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Email:</div>
+				<div class="form-right"><input type="email" name="email"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Password:</div>
+				<div class="form-right"><input type="password" name="password"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Confirm password:</div>
+				<div class="form-right"><input type="password" name="password_again"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Zipcode:</div>
+				<div class="form-right"><input type="text" name="zip"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">When is your baby due?:</div>
+				<div class="form-right"><input type="date" name="due_date"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">How much are you looking to spend on your doula?</div>
+				<div class="form-right">From: <input type="number" name="price_min"> to: <input type="number" name="price_max"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Give us some background about yourself:</div>
+				<div class="form-right"><input type="text" name="background" style="width:300px; height:100px"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Describe your ideal doula. Any specific services you're looking for? Experience level?</div>
+				<div class="form-right"><input type="text" name="ideal_nar" style="width:300px; height:100px"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Visibility settings: Who would you like to be able to see your profile?</div>
+				<div class="form-right">
+					<select name="visibility">
+						<dd><option value="all">Doulas and other parents</option>
+	  					<dd><option value="doulas">Doulas only</option>
+	  					<dd><option value="none">No one, I'm just here to contact others</option>
+  				</div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left">Upload a profile picture</div>
+				<div class="form-right"><input type="file" name="image" accept="image/*"></div>
+			</li>
+
+			<li class="form-wrap">
+				<div class="form-left"><input type="submit" value="Sign Up"></div>
+			</li>
+		</ul>
 	</form>
 
 

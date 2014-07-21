@@ -2,7 +2,26 @@
 
 
 {% block body %}
-<h2> Search results here </h2>
+
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2>Doula Search Results</h2></div>
+	<table class="table">
+		<tr><th>Doula</th><th>Practice</th><th>Zipcode</th></tr>
+		{% for doula in doula_list %}
+		<tr>
+			<td><a href="/doula/{{ doula.id }}">{{ doula.firstname }} {{ doula.lastname }}</a></td>
+				{% if doula.website %}
+					<td><a href="{{ doula.website }}"> {{ doula.practice }}</td>
+				{% else %}
+					<td> -- </td>
+				{% endif %}
+			<td> {{ doula.zipcode }} </td>
+		</tr>
+		{% endfor %}
+  </table>
+</div>
+
 
 
 {% endblock %}

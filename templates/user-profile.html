@@ -5,16 +5,15 @@
 
 <div class="container">
   <div class="row">
-      <div class="col-md-3 col-sm-4" id="profile-column-left"> box 1: Profile picture and Due date calendar
+      <div class="col-md-3 col-sm-4" id="profile-column-left">
         <div id="parent-profile-pic"> <img width="150" src="/static/images/uploads/parent_{{ parent.id }}.jpg"> 
-          <p>Parent profile pic</p>
         </div>
-        <div id="calendar"> 
+        <div id="calendar" width="150"> 
           <p>Due Date: {{ due_date }}</p>
         </div>
       </div>
 
-      <div class="col-md-6 col-sm-8" id="profile-column-middle"> box 2: main profile information 
+      <div class="col-md-6 col-sm-8" id="profile-column-middle">
         <!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
         <h2> {{ parent.firstname }} {{ parent.lastname }}
         <h4> Due Date </h4> {{ parent.duedate }}
@@ -25,7 +24,7 @@
       </div>
 
       <div class="col-md-3 col-sm-12" id="profile-column-right">
-        <p>box 3: suggestions area for similar parents</p>
+        <p>Similar Parents</p>
         <div class="parent-suggestion col-md-12 col-sm-4">
           <div class="col-sm-6" id="suggestion-1-thumb"> 
             <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">

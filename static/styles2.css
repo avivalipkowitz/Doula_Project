@@ -87,11 +87,29 @@ dl dd {
 
 .form-right {
 	display:inline-block;
-	margin-left: 100px;
+	margin-left: 10px;
 }
 
 container {
 	margin: 0px;
 }
 
+.navbar-brand {
+	list-style-type: none;
+}
 
+.list-group-item {
+	text-align: left;
+}
+
+.table td {
+	text-align: left;
+}
+
+.panel-default .panel-heading {
+	background-color: #307B7B;
+}
+
+.panel-default .panel-heading h2{
+	color: #EEF5F5;
+}

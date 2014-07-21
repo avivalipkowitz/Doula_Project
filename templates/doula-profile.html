@@ -4,20 +4,19 @@
 
 <div class="container">
 	<div class="row">
-  		<div class="col-md-3 col-sm-4" id="profile-column-left"> box 1: Profile picture and calendar 
+  		<div class="col-md-3 col-sm-4" id="profile-column-left">
   			<div id="doula-profile-pic"> <img width="150" src="/static/images/uploads/AvivaLipkowitz.jpg"> 
-          <p>Doula profile pic</p>
         </div>
-  			<div id="calendar"> 
+  			<div id="calendar" width="150"> 
           <img src="/static/images/calendar.png" width="150">
           <p>Calendar of availability</p>
         </div>
   		</div>
 
-  		<div class="col-md-6 col-sm-8" id="profile-column-middle"> box 2: main profile information 
+  		<div class="col-md-6 col-sm-8" id="profile-column-middle">
   			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
   			<h2> {{ doula.firstname }} {{ doula.lastname }}
-  			<h4> Website </h4> {{ doula.website }}
+  			<h4> Website </h4> <a href="{{ doula.website }}">{{ doula.website }}</a>
   			<h4> Phone </h4> {{ doula.phone }}
   			<h4> Price </h4> ${{ doula.price_min }} to ${{ doula.price_max }}
   			<h4> Background </h4> {{ doula.background }}
@@ -26,7 +25,7 @@
   		</div>
 
   		<div class="col-md-3 col-sm-12" id="profile-column-right">
-        <p>box 3: suggestions area for similar doulas</p>
+        <p>Similar Doulas</p>
   			<div class="doula-suggestion col-md-12 col-sm-4">
           <div class="col-sm-6" id="suggestion-1-thumb"> 
             <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
