@@ -28,7 +28,7 @@ Base.query = session.query_property()
 # Parent and Doula, so that this doesn't have to be replicated
 
 
-class User(Base)
+class User(Base):
 	__tablename__ = "users"
 
 	id = Column(Integer, primary_key = True) #does this need to be in the child class?
@@ -42,17 +42,23 @@ class User(Base)
 	image = Column(String(64), nullable = True)
 	zipcode = Column(String(64), nullable = True)
 
-class Doula(User):
+	doula = relationship("Doula", backref=backref("users", order_by=id))
+
+	parent = relationship("Parent", backref=backref("users", order_by=id))
+
+class Doula(Base):
 	__tablename__ = "doulas"
 
 
-	id = Column(Integer, primary_key = True) #does this need to be in the child class?
+	id = Column(Integer, primary_key = True)
 	practice = Column(String(64), nullable = True)
 	phone = Column(String(20), nullable = True)
 	website = Column(String(100), nullable = True)
 	services = Column(Text, nullable = True)
 	reviews = Column(String(200), nullable = True)
-	user_id = Column(Integer, nullable = False)
+	user_id = Column(Integer, ForeignKey('users.id'), nullable = False)
+
+	
 
 
 	def is_authenticated(self):
@@ -68,8 +74,6 @@ class Doula(User):
 		return unicode(self.id)
 
 
-
-
 class Parent(Base):
 	__tablename__ = "parents"
 
@@ -83,13 +87,14 @@ class Parent(Base):
 		return unicode(self.id)
 
 
-	id = Column(Integer, primary_key = True) #does this need to be in the child class?
-
+	id = Column(Integer, primary_key = True) 
 	display_name = Column(String(64), nullable = True)
 	ideal_doula_nar = Column(Text, nullable = True)
 	visibility = Column(String(64), nullable = True)
 	due_date = Column(DateTime, nullable = True)
-	user_id = Column(Integer, nullable = False)
+	user_id = Column(Integer, ForeignKey('users.id'), nullable = False)
+
+
 
 
 def main():
