@@ -1,30 +1,32 @@
 {% extends 'logged-out-base.html' %}
 
 {% block body %}
-	<h2>Parent Log In</h2>
-	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
-	<form action="/parent_login{% if next %}?next={{ next }}{% endif %}" method="post">
-		<!--??? what do dl and dd and dt do? ??? -->
-		<dl> 
-			<dt>Email:
-			<dd><input type="text" name="email">
-			<dt>Password:
-			<dd><input type="password" name="password">
-			<dd><input type="submit" value="Login">
-		</dl>
-	</form>
 
-	<h2>Doula Log In</h2>
-	<form action="/doula_login{% if next %}?next={{ next }}{% endif %}" method="post">
-		<!--??? what do dl and dd and dt do? ??? -->
-		<dl> 
-			<dt>Email:
-			<dd><input type="text" name="email">
-			<dt>Password:
-			<dd><input type="password" name="password">
-			<dd>
-			<dd><input type="submit" value="Login">
-			
-		</dl>
-	</form>
+
+<div class="panel panel-default">
+	<div class="panel-heading"><h2>Log In</h2>
+	</div>
+	<table class="table" id="login_table">
+		<form action="/login{% if next %}?next={{ next }}{% endif %}" method="post">
+			<tr>
+				<td>What type of DoulaHooper are you?</td>
+				<td>
+					<input type="radio" name="role" value="doula"> Doula
+					<input type="radio" name="role" value="parent"> Parent
+				</td>
+			<tr>
+				<td>Email</td>
+				<td><input type="text" name="email"></td>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="password"><td>
+			<tr>
+				<td> </td>
+				<td><input type="submit" value="Login"></td>
+		</form>
+  	</table>
+</div>
+
+
+
 {% endblock %}

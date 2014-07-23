@@ -1,14 +1,14 @@
 build html templates
-	index
-	login
+	DONE index
+	DONE login
 	sign-up doulas
-		make sure that password matches password_again
+		DONE make sure that password matches password_again
 		add in checklist of all the services they might offer, to store in doula_services table
-	sign-up parents
+	DONE sign-up parents
 		make sure that password matches password_again
-	search
-	search results
-	parent profile
+	DONE search
+	DONE search results
+	DONE parent profile
 	about
 	contact
 	reviews
@@ -17,11 +17,11 @@ build fancy components
 	personality maps
 	messaging system
 database
-	do mongo tutuorial
-	decide on database structure
+	DECIDED AGAINST do mongo tutuorial
+	DONE decide on database structure
 	design architecture
-	doula table
-	parent table
+	DONE doula table
+	DONE parent table
 	doula services table
 	get test cases loaded
 	populate tables with fake data
@@ -29,28 +29,28 @@ database
 style
 	[DONE] create banner
 	[DONE] download bootstrap template
-	adjust bootstrap to my settings
-		change the color of the nav bar
-	set index styles
-		get parent/doula jumbotrons side by side 
-	set login styles 
-	set signup styles 
+	[DONE] adjust bootstrap to my settings
+		[DONE] change the color of the nav bar
+	[DONE] set index styles
+		[DONE] get parent/doula jumbotrons side by side 
+	[DONE] set login styles 
+	[DONE] set signup styles 
 	set doula profile styles
 	set parent profile styles
-	set search styles
-	set search result styles
+	[DONE] set search styles
+	[DONE] set search result styles
 
 search
-	level 1: simple search by zipcode (fina all doulas in that zip)
+	[DONE] level 1: simple search by zipcode (find all doulas in that zip)
 	level 2: find all doulas within 10 miles of given zip
 	level 3: advanced search - find all doulas with given characteristics from doula table
 	level 4: find all doulas with given skill set from doula services table
 	level 5: map results
 
 branding
-	get a name
-	get a logo
-	remake banner
+	[DONE] get a name
+	[DONE] get a logo
+	[DONE] remake banner
 	[DONE] decide on color scheme
 
 	

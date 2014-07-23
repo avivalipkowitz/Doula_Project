@@ -35,13 +35,16 @@ def file_extension(filename):
 
 #only setting this up for doulas at the moment
 @login_manager.user_loader
-def load_user(doula_id):
+def load_user(user_id):
 	# query user database (user id has to be unicode)
 	# except that i think i'm getting the email, so i'll probably have to add a step where 
 	# I'm getting the user_id (or Doula_id, as the case may be)
 	# fix to be clearer on the exceptions to raise specific errors
+
+	# have to pass in the role here so that the function knows to return one user type or the other
 	# try:
-	return model.session.query(model.User).get(id)
+
+	return model.session.query(model.Doula).get(user_id)
 	# except:
 	# 	return None
 
@@ -62,42 +65,38 @@ def show_login():
 	next = request.args.get('next')
 	return render_template('login.html', next = next)
 
-@app.route('/doula_login', methods = ['POST'])
+@app.route('/login', methods = ['POST'])
 def process_login():
 	f = request.form
 
-	doula_email = f.get('email')
-	doula_password = f.get('password')
+	user_email = f.get('email')
+	user_password = f.get('password')
+	role = f.get('role')
 
-	doula = model.session.query(model.Doula).filter_by(email = doula_email).filter_by(password = doula_password).first()
+	if role == 'doula':
+		user = model.session.query(model.Doula).filter_by(email = user_email).filter_by(password = user_password).first()
 
-	if not doula:
-		flash("invalid login")
-		return redirect('/login')
-	else:
-		login_user(doula) # this saves the user info in the session
-		flash("You succesfully logged in!")
+		if not user:
+			flash("invalid login")
+			return redirect('/login')
+		else:
+			login_user(user) # this saves the user info in the session
+			flash("You succesfully logged in!")
+			id = user.id
 
-		return redirect(request.args.get('next')  or ('/'))
+			return redirect(request.args.get('next')  or ('/'))
 
-		
-@app.route('/parent_login', methods = ['POST'])
-def process_login():
-	f = request.form
+	elif role == 'parent':
+		user = model.session.query(model.Parent).filter_by(email = user_email).filter_by(password = user_password).first()
 
-	parent_email = f.get('email')
-	parent_password = f.get('password')
+		if not user:
+			flash("invalid login")
+			return redirect('/login')
+		else:
+			login_user(user) # this saves the user info in the session
+			flash("You succesfully logged in!")
 
-	parent_login = model.session.query(model.Parent).filter_by(email = parent_email).filter_by(password = parent_password).first()
-
-	if not parent:
-		flash("invalid login")
-		return redirect('/login')
-	else:
-		login_user(parent) # this saves the user info in the session
-		flash("You succesfully logged in!")
-
-		return redirect(request.args.get('next')  or ('/'))
+			return redirect(request.args.get('next')  or ('/user/' + str(user.id)))
 
 
 @app.route('/logout')
@@ -228,13 +227,13 @@ def process_signup_parent():
 
 	
 	# check to see if user already exists
-	elif model.session.query(model.User).get('email') != None:
+	elif model.session.query(model.Parent).get('email') != None:
 		flash("Email already exists. Login with that email, or sign up with a different email.")
 		return redirect('/signup_parent')
 
 
 	else:
-		parent = model.User(email = email, 
+		parent = model.Parent(email = email, 
 							password = password, 
 							firstname = first_name,
 							lastname = last_name,
@@ -243,19 +242,15 @@ def process_signup_parent():
 							price_min = price_min,
 							price_max = price_max,
 							background = background_nar,
-							
+							display_name = display_name,
+							due_date = due_date,
+							ideal_doula_nar = ideal_doula_nar,
+							visibility = visibility
 							)
 
 		model.session.add(parent)
 		model.session.commit()
 
-
-		## This stuff used to be attached to the parent initialization thing above, but I moved it down here since it doesn't fit in my new users table. But, screw that, I'm going to put it all back the way it was supposed to be.
-
-		# display_name = display_name,
-		# 					due_date = due_date,
-		# ideal_doula_nar = ideal_doula_nar,
-		# 					visibility = visibility
 
 		# save filename as combo of usertype and id. have to save this for the end so that the id is generated
 		file = request.files['image']

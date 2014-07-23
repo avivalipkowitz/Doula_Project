@@ -113,3 +113,7 @@ container {
 .panel-default .panel-heading h2{
 	color: #EEF5F5;
 }
+
+#login_table .tr {
+	font-weight: normal;
+}

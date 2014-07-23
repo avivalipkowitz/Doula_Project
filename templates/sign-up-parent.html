@@ -2,87 +2,70 @@
 
 {% block body %}
 
-	<h2>Sign Up as a Parent</h2>
-	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }} 
+	{% endif %}
 
-	<form action="signup_parent" enctype="multipart/form-data" method="post">
-		<!--??? what do dl and dd and dt do? ??? -->
-		<ul class="signup-list">  
-			<li class="form-wrap">
-				<div class="form-left">First name:</div>
-				<div class="form-right"><input type="text" name="firstname"></div>
-			</li>
 
-			<li class="form-wrap">
-				<div class="form-left">Last name:</div>
-				<div class="form-right"><input type="text" name="lastname"></div>
-			</li>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h2>Parent Sign Up</h2>
+	</div>
+	<table class="table" id="login_table">
+		<form action="signup_parent" enctype="multipart/form-data" method="post">
+			<tr>
+				<td>First name:</td>
+				<td><input type="text" name="firstname"></td>
+			<tr>
+				<td>Last name:</td>
+				<td><input type="text" name="lastname"></td>
+			<tr>
+				<td>Display name for profile page:</td>
+				<td><input type="text" name="display_name"></td>
+			<tr>
+				<td>Email:</td>
+				<td><input type="email" name="email"></td>
 
-			<li class="form-wrap">
-				<div class="form-left">Display name for profile page:</div>
-				<div class="form-right"><input type="text" name="display_name"></div>
-			</li>
+			<tr>
+				<td>Password:</td>
+				<td><input type="password" name="password"></td>
+			<tr>
+				<td>Confirm password:</td>
+				<td><input type="password" name="password_again"></td>
+			<tr>
+				<td>Zipcode:</td>
+				<td><input type="text" name="zip"></td>
+			<tr>
+				<td>When is your baby due?:</td>
+				<td><input type="date" name="due_date"></td>
+			<tr>
+				<td>How much are you looking to spend on your doula?</td>
+				<td>From: <input type="number" name="price_min"> 
+					<br><br>To:     <input type="number" name="price_max"></td>
+			<tr>
+				<td>Give us some background about yourself:</td>
+				<td><textarea name="background" rows="5" cols="50"></textarea></td>
+			<tr>
+				<td>Describe your ideal doula. Any specific services you're looking for? Experience level?</td>
+				<td><textarea name="ideal_nar" rows="5" cols="50"></textarea></td>
 
-			<li class="form-wrap">
-				<div class="form-left">Email:</div>
-				<div class="form-right"><input type="email" name="email"></div>
-			</li>
+			<tr>
+				<td>Visibility settings: Who would you like to be able to see your profile?</td>
+				<td><select name="visibility">
+							<dd><option value="all">Doulas and other parents</option>
+		  					<dd><option value="doulas">Doulas only</option>
+		  					<dd><option value="none">No one, I'm just here to contact others</option>
+		  		</td>
+			<tr>
+				<td>Upload a profile picture</td>
+				<td><input type="file" name="image" accept="image/*"></td>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Sign Up"></td>
 
-			<li class="form-wrap">
-				<div class="form-left">Password:</div>
-				<div class="form-right"><input type="password" name="password"></div>
-			</li>
 
-			<li class="form-wrap">
-				<div class="form-left">Confirm password:</div>
-				<div class="form-right"><input type="password" name="password_again"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Zipcode:</div>
-				<div class="form-right"><input type="text" name="zip"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">When is your baby due?:</div>
-				<div class="form-right"><input type="date" name="due_date"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">How much are you looking to spend on your doula?</div>
-				<div class="form-right">From: <input type="number" name="price_min"> to: <input type="number" name="price_max"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Give us some background about yourself:</div>
-				<div class="form-right"><input type="text" name="background" style="width:300px; height:100px"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Describe your ideal doula. Any specific services you're looking for? Experience level?</div>
-				<div class="form-right"><input type="text" name="ideal_nar" style="width:300px; height:100px"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Visibility settings: Who would you like to be able to see your profile?</div>
-				<div class="form-right">
-					<select name="visibility">
-						<dd><option value="all">Doulas and other parents</option>
-	  					<dd><option value="doulas">Doulas only</option>
-	  					<dd><option value="none">No one, I'm just here to contact others</option>
-  				</div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Upload a profile picture</div>
-				<div class="form-right"><input type="file" name="image" accept="image/*"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left"><input type="submit" value="Sign Up"></div>
-			</li>
-		</ul>
-	</form>
+		</form>
+	</table>
 
 
 {% endblock %}
