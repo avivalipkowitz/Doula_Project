@@ -117,3 +117,11 @@ container {
 #login_table .tr {
 	font-weight: normal;
 }
+
+table {
+	border-color: red;
+}
+
+/*a .editable {
+	color: black;
+}*/

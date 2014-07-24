@@ -61,6 +61,9 @@ class Doula(Base):
 	def get_id(self):
 		return unicode(self.id)
 
+	def is_doula(self):
+		return True
+
 
 class Parent(Base):
 	__tablename__ = "parents"
@@ -82,6 +85,9 @@ class Parent(Base):
 	due_date = Column(DateTime, nullable = True)
 
 
+	def is_authenticated(self):
+		return True
+
 	def is_active(self):
 		return True
 
@@ -90,6 +96,9 @@ class Parent(Base):
 
 	def get_id(self):
 		return unicode(self.id)
+
+	def is_doula(self):
+		return False
 
 
 def main():

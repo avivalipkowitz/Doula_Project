@@ -15,13 +15,32 @@
 
   		<div class="col-md-6 col-sm-8" id="profile-column-middle">
   			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
-  			<h2> {{ doula.firstname }} {{ doula.lastname }}
-  			<h4> Website </h4> <a href="{{ doula.website }}">{{ doula.website }}</a>
-  			<h4> Phone </h4> {{ doula.phone }}
-  			<h4> Price </h4> ${{ doula.price_min }} to ${{ doula.price_max }}
-  			<h4> Background </h4> {{ doula.background }}
-  			<h4> Services Provided </h4> {{ doula.services }} 
-  			<h4> Location </h4> Zip: {{ doula.zipcode }}
+  			<h2>
+          <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="firstname" data-original-title title data-url="/doula_edit" data-title="Enter your first name">{{ doula.firstname }}
+          </a>
+          <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="lastname" data-original-title title data-url="/doula_edit" data-title="Enter your last name">{{ doula.lastname }}
+          </a>
+        </h2>
+  			<h4> Website</h4> 
+          <a href="{{ doula.website }}">{{ doula.website }}</a>
+          <span class="glyphicon glyphicon-pencil"></span>
+          <!--  Still have to figure out where all this fits in
+          <a href="#" class="editable" data-type="text" pata-pk="{{ doula.id }}" data-name="website" data-original-title title data-url="/doula_edit" data-title="Enter your website URL">
+          </a> -->
+          
+          
+  			<h4> Phone </h4>
+          <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="phone" data-original-title title data-url="/doula_edit" data-title="Enter your phone number"> {{ doula.phone }}</a>
+  			<h4> Price </h4> 
+          <a href="#" class="editable" data-type="number" data-pk="{{ doula.id }}" data-name="price_min" data-original-title title data-url="/doula_edit" data-title="Enter your minimum price">${{ doula.price_min }}</a>
+          to 
+          <a href="#" class="editable" data-type="number" data-pk="{{ doula.id }}" data-original-title title data-name="price_max" data-url="/doula_edit" data-title="Enter your maximum price">${{ doula.price_max }}</a>
+  			<h4> Background </h4> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-original-title title data-name="background" data-url="/doula_edit" data-title="Describe your background">{{ doula.background }}</a>
+  			<h4> Services Provided </h4> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-original-title title data-name="services" data-url="/doula_edit" data-title="Describe what services you provide">{{ doula.services }} </a>
+  			<h4> Location </h4> 
+          Zip:<a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-original-title title data-name="zipcode" data-url="/doula_edit" data-title="Enter your zipcode"> {{ doula.zipcode }}</a>
   		</div>
 
   		<div class="col-md-3 col-sm-12" id="profile-column-right">
@@ -61,5 +80,19 @@
 	</div>
 </div>
 
+{% endblock %}
+<!-- Javascript to turn on editability -->
+
+{% block script %}
+ <!-- preferably keep this just on the pages that are editable (profile pages) -->
+    <script>
+      $.fn.editable.defaults.mode = 'popup';
+
+      $(document).ready(function() {
+      
+        //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
+        $('.editable').editable();
+      });
+    </script>
 
 {% endblock %}

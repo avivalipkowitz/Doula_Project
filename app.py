@@ -1,5 +1,7 @@
-from flask import Flask, request, session, render_template, g, redirect, url_for, flash
-from flask.ext.login import LoginManager, login_required, logout_user, login_user
+from flask import Flask, Response, request, session, render_template, g, redirect, url_for, flash
+from flask.ext.login import LoginManager, login_required, logout_user, login_user, current_user
+from flask.ext.principal import Principal, Permission, RoleNeed
+
 import jinja2
 import model
 import os
@@ -22,6 +24,14 @@ login_manager = LoginManager() #from flask-login tutorial
 login_manager.init_app(app)
 login_manager.login_view = '/login'
 
+# From Flask Principal tutorial
+# load the extension
+principals = Principal(app)
+#create a permission with a single Need, in this case a RoleNeed.
+doula_permission = Permission(RoleNeed('doula'))
+admin_permission = Permission(RoleNeed('admin'))
+
+
 
 # for file uploads (for profile picture)
 # from flask tutorial on file uploads
@@ -43,8 +53,14 @@ def load_user(user_id):
 
 	# have to pass in the role here so that the function knows to return one user type or the other
 	# try:
+	role = session.get('role', None)
+	if role == 'doula':
+		return model.session.query(model.Doula).get(user_id)
+	elif role == 'parent':
+		return model.session.query(model.Parent).get(user_id)
 
-	return model.session.query(model.Doula).get(user_id)
+
+	return None
 	# except:
 	# 	return None
 
@@ -80,6 +96,7 @@ def process_login():
 			flash("invalid login")
 			return redirect('/login')
 		else:
+			session['role'] = 'doula'
 			login_user(user) # this saves the user info in the session
 			flash("You succesfully logged in!")
 			id = user.id
@@ -93,10 +110,15 @@ def process_login():
 			flash("invalid login")
 			return redirect('/login')
 		else:
+			session['role'] = 'parent'
 			login_user(user) # this saves the user info in the session
 			flash("You succesfully logged in!")
 
 			return redirect(request.args.get('next')  or ('/user/' + str(user.id)))
+
+	else:
+		flash("invalid role--check the user type, fool")
+		return redirect('/login')
 
 
 @app.route('/logout')
@@ -277,7 +299,18 @@ def display_doula_profile(id):
 @app.route('/user/<int:id>') #change this route to include the parents's <int:id> in the url
 @login_required
 def display_user_profile(id):
+
 	parent = model.session.query(model.Parent).get(id)
+
+	# set permissions
+	if parent.visibility == "doulas" and not current_user.is_doula() and current_user.id != parent.id:
+		flash('This user has chosen to be visible to doulas only')
+		return render_template('blank.html')
+
+	elif parent.visibility == 'none' and current_user.id != parent.id:
+		flash('This user has chosen to be invisible')
+		return render_template('blank.html')
+		
 
 	due_date = parent.due_date.strftime("%m/%d/%y")
 
@@ -299,7 +332,81 @@ def display_search_results():
 	doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
 	return render_template('search-results.html', doula_list = doula_list)
 
+@app.route('/doula_edit', methods = ['POST'])
+def apply_doula_edits():
+	f = request.form
 
+	id = f.get('pk')
+	field = f.get('name')
+	new_value = f.get('value')
+
+	doula = model.session.query(model.Doula).get(id)
+	if field == 'firstname':
+		doula.firstname = new_value
+
+	if field == 'lastname':
+		doula.lastname = new_value
+
+	if field == 'website':
+		doula.website = new_value
+
+	if field == 'phone':
+		doula.phone = new_value
+
+	if field == 'price_min':
+		doula.price_min = new_value
+	
+	if field == 'price_max':
+		doula.price_max = new_value
+
+	if field == 'background':
+		doula.background = new_value
+
+	if field == 'services':
+		doula.services = new_value
+
+	if field == 'zipcode':
+		doula.zipcode = new_value
+
+	model.session.commit()
+
+	return( 'success!')
+
+@app.route('/parent_edit', methods = ['POST'])
+def apply_parent_edits():
+	f = request.form
+
+	id = f.get('pk')
+	field = f.get('name')
+	new_value = f.get('value')
+
+	parent = model.session.query(model.Parent).get(id)
+	if field == 'firstname':
+		parent.firstname = new_value
+
+	if field == 'lastname':
+		parent.lastname = new_value
+
+	if field == 'zipcode':
+		parent.zipcode = new_value
+
+	if field == 'price_min':
+		parent.price_min = new_value
+	
+	if field == 'price_max':
+		parent.price_max = new_value
+
+	if field == 'background':
+		parent.background = new_value
+
+	if field == 'ideal_nar':
+		parent.ideal_doula_nar = new_value
+
+	
+
+	model.session.commit()
+
+	return( 'success!')
 
 if __name__ == '__main__':
 	app.debug = True

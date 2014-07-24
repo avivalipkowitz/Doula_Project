@@ -1,88 +1,66 @@
 {% extends 'logged-out-base.html' %}
 
 {% block body %}
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{ error }} 
+	{% endif %}
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+		<h2>Doula Sign Up</h2>
+	</div>
+	<table class="table" id="login_table">
+		<form action="signup_doula" enctype="multipart/form-data" method="post">
+			<tr>
+				<td>First name:</td>
+				<td><input type="text" name="firstname"></td>
+			<tr>
+				<td>Last name:</td>
+				<td><input type="text" name="lastname"></td>
+			<tr>
+				<td>Name of your practice (if you have one):</td>
+				<td><input type="text" name="practice"></td>
 
-	<h2>Sign Up as a Doula</h2>
-	{% if error %}<p class="error"><strong>Error:</strong> {{ error }} {% endif %}
-	<form action="signup_doula" enctype="multipart/form-data" method="post">
-		<!--??? what do dl and dd and dt do? ??? -->
-		<!-- Add do this a checklist of the services a doula might provide for doula_services table -->
-		<ul class="signup-list"> 
-			<li class="form-wrap">
-				<div class="form-left">First name:</div>
-				<div class="form-right"><input type="text" name="firstname"></div>
-			</li>
+			<tr>
+				<td>Email:</td>
+				<td><input type="email" name="email"></td>
+			<tr>
+				<td>Password:</td>
+				<td><input type="password" name="password"></td>
+			<tr>
+				<td>Confirm password:</td>
+				<td><input type="password" name="password_again"></td>
+			<tr>
+				<td>Phone number:</td>
+				<td><input type="tel" name="phone"></td>
+			<tr>
+				<td>Website:</td>
+				<td><input type="text" name="website"></td>
+			<tr>
+				<td>Price range:</td>
+				<td>
+					From <input type="number" name="price_min">
+					<br> To <input type="number" name="price_max">
+				</td>
+			<tr>
+				<td>Give us some background about yourself:</td>
+				<td><textarea name="background" rows="5" cols="50"></textarea></td>
+			<tr>
+				<td>What services do you provide?</td>
+				<td><textarea name="services" rows="5" cols="50"></textarea></td>
+			<tr>
+				<td>Zipcode:</td>
+				<td><input type="text" name="zip"><</td>
+			<tr>
+				<td>Upload a profile picture</td>
+				<td><input type="file" name="image" accept="image/*"></td>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Sign Up"></td>
 
-			<li class="form-wrap">
-				<div class="form-left">Last name:</div>
-				<div class="form-right"><input type="text" name="lastname"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Name of your practice (if you have one):</div>
-				<div class="form-right"><input type="text" name="practice"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Email:</div>
-				<div class="form-right"><input type="email" name="email"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Password:</div>
-				<div class="form-right"><input type="password" name="password"></div>
-			</li>
-			
-			<li class="form-wrap">
-				<div class="form-left">Confirm password:</div>
-				<div class="form-right"><input type="password" name="password_again"></div>
-			</li>
-			
-			<li class="form-wrap">
-				<div class="form-left">Phone number:</div>
-				<div class="form-right"><input type="tel" name="phone"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Website:</div>
-				<div class="form-right"><input type="text" name="website"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Price range: From</div>
-				<div class="form-right"><input type="number" name="price_min"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left"> to </div>
-				<div class="form-right"><input type="number" name="price_max"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">Give us some background about yourself:</div>
-				<div class="form-right"><input type="text" name="background" style="width:300px; height:100px"></div>
-			</li>
-
-			<li class="form-wrap">
-				<div class="form-left">What services do you provide? </div>
-				<div class="form-right"><input type="text" name="services" style="width:300px; height:100px"></div>
-			</li>
-			
-			<li class="form-wrap">
-				<div class="form-left">Zipcode:</div>
-				<div class="form-right"><input type="text" name="zip"></div>
-			</li>
-			
-			<li class="form-wrap">
-				<div class="form-left">Upload a profile picture</div>
-				<div class="form-right"><input type="file" name="image" accept="image/*"></div>
-			</li>
-			
-			<li class="form-wrap">
-				<div class="form-left"><input type="submit" value="Sign Up"></div>
-			</li>
-		</ul>
-	</form>
+		</form>
+	</table>
+</div>
 
 
 {% endblock %}

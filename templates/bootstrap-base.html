@@ -15,9 +15,9 @@
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap3 editability plugin -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+   <!--  <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/> -->
 
-    <link href="static/boostrap/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
+    <link href="/static/bootstrap/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="/static/bootstrap/css/starter-template.css" rel="stylesheet">
@@ -97,15 +97,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     
     <!-- this is from jquery datepicker page -->
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     
     <!-- this is for bootstrap editability -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <!-- use the link in production, not development. also, the one i'm linking to in my directory is not minimized, easier to read for now, switch in production
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script> -->
     <script src="/static/bootstrap/bootstrap-editable/js/bootstrap-editable.js"></script>
+
+    
+    
+
     {% block script %}
     {% endblock %}
 

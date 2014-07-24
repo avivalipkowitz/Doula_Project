@@ -2,7 +2,9 @@ Flask==0.10.1
 Flask-Login==0.2.11
 Jinja2==2.7.3
 MarkupSafe==0.23
+SQLAlchemy==0.9.6
+WTForms==2.0.1
 Werkzeug==0.9.6
 itsdangerous==0.24
+ordereddict==1.1
 wsgiref==0.1.2
-SQLAlchemy==0.7.9

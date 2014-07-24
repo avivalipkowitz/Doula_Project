@@ -5,7 +5,7 @@
 
 <div class="container">
   <div class="row">
-      <div class="col-md-3 col-sm-4" id="profile-column-left">
+      <div class="col-md-4 col-sm-5" id="profile-column-left">
         <div id="parent-profile-pic"> <img width="150" src="/static/images/uploads/parent_{{ parent.id }}.jpg"> 
         </div>
         <div id="calendar" width="150"> 
@@ -13,14 +13,20 @@
         </div>
       </div>
 
-      <div class="col-md-6 col-sm-8" id="profile-column-middle">
+      <div class="col-md-5 col-sm-7" id="profile-column-middle">
         <!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
-        <h2> {{ parent.firstname }} {{ parent.lastname }}
-        <h4> Due Date </h4> {{ parent.duedate }}
-        <h4> Zipcode </h4> {{ parent.zipcode }}
-        <h4> Price </h4> {{ parent.price_min }} to {{ parent.price_max }}
-        <h4> Background </h4> {{ parent.background }}
-        <h4> Ideal Provider </h4> {{ parent.ideal_doula_nar }} 
+        <h2> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="firstname" data-original-title title data-url="/parent_edit" data-title="Enter your first name">{{ parent.firstname }} </a>
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="lastname" data-original-title title data-url="/parent_edit" data-title="Enter your last name">{{ parent.lastname }} </a>
+        <h4> Zipcode </h4> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="zipcode" data-original-title title data-url="/parent_edit" data-title="Enter your zipcode">{{ parent.zipcode }}
+        <h4> Price </h4> 
+          <a href="#" class="editable" data-type="number" data-pk="{{ parent.id }}" data-name="price_min" data-original-title title data-url="/parent_edit" data-title="Enter the minimum you'd like to pay">${{ parent.price_min }}</a>
+          to <a href="#" class="editable" data-type="number" data-pk="{{ parent.id }}" data-name="price_max" data-original-title title data-url="/parent_edit" data-title="Enter the maximum you'd like to pay">${{ parent.price_max }}</a>
+        <h4> Background </h4> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="background" data-original-title title data-url="/parent_edit" data-title="Give some background about yourself">{{ parent.background }}</a>
+        <h4> Ideal Provider </h4> 
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="ideal_nar" data-original-title title data-url="/parent_edit" data-title="Describe your ideal doula">{{ parent.ideal_doula_nar }} </a>
       </div>
 
       <div class="col-md-3 col-sm-12" id="profile-column-right">
@@ -67,6 +73,16 @@
     <script>  
       $(function() {
         $( "#calendar" ).datepicker({ defaultDate: "{{ due_date }}" });
+      });
+    </script>
+
+    <script>
+      $.fn.editable.defaults.mode = 'popup';
+
+      $(document).ready(function() {
+      
+        //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
+        $('.editable').editable();
       });
     </script>
 {% endblock %}
