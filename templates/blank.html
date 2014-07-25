@@ -1,1 +1,5 @@
-{% extends 'bootstrap-base.html' %}
+{% if current_user.is_authenticated() %}
+	{% extends 'logged-in-base.html' %}
+{% else %}
+	{% extends 'logged-out-base.html' %}
+{% endif %}

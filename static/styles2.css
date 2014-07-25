@@ -122,6 +122,16 @@ table {
 	border-color: red;
 }
 
+#search-all {
+	display: inline-block;
+}
+
+#editability {
+	display: inline-block;
+	margin-left: 300px;
+	z-index: 1;
+}
+
 /*a .editable {
 	color: black;
 }*/

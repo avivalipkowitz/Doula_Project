@@ -1,6 +1,7 @@
 from flask import Flask, Response, request, session, render_template, g, redirect, url_for, flash
 from flask.ext.login import LoginManager, login_required, logout_user, login_user, current_user
 from flask.ext.principal import Principal, Permission, RoleNeed
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import jinja2
 import model
@@ -41,6 +42,10 @@ def allowed_file(filename):
 
 def file_extension(filename):
 	return filename.split('.')[-1]
+
+# from password salt tutorial
+def set_password(password):
+	return generate_password_hash(password)
 
 
 #only setting this up for doulas at the moment
@@ -178,8 +183,9 @@ def process_signup_doula():
 		return redirect('/signup_doula')
 
 	else:
+		hashed_password = model.pw_hash(password)
 		doula = model.Doula(email = email, 
-							password = password, 
+							password = hashed_password, 
 							firstname = first_name,
 							lastname = last_name,
 							practice = practice_name,
@@ -331,6 +337,11 @@ def display_search_results():
 	
 	doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
 	return render_template('search-results.html', doula_list = doula_list)
+
+@app.route('/list_all', methods = ['POST'])
+def list_all_doulas():
+	all_doula_list = model.session.query(model.Doula).all()
+	return render_template('search-results.html', doula_list = all_doula_list)
 
 @app.route('/doula_edit', methods = ['POST'])
 def apply_doula_edits():

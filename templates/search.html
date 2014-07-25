@@ -2,14 +2,17 @@
 
 
 {% block body %}
-<h2> Search bar here </h2>
-<form action="/search" method="post">
+<h2>Find doulas in your area</h2>
+	<form action="/search" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
 		<dl> 
 			<dt>Search for doulas by zipcode:
 			<dd><input type="search" name="doula_zip_search" placeholder="zipcode">
 			<dd><input type="submit" value="Search">
 		</dl>
+	</form>
+	<form id="search-all" action="/list_all" method="post">
+		<input type="submit" value="List all">
 	</form>
 
 {% endblock %}

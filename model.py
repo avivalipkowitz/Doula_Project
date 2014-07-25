@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #from ratings tutorial
 ENGINE = None
@@ -48,6 +49,13 @@ class Doula(Base):
 	services = Column(Text, nullable = True)
 	reviews = Column(String(200), nullable = True)
 	
+
+	# From flask password salt turtorial
+	def set_password(self, password):
+		self.pw_hash = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.pw_hash, password)
 
 	def is_authenticated(self):
 		return True

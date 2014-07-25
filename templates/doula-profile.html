@@ -3,7 +3,10 @@
 {% block body %}
 
 <div class="container">
-	<div class="row">
+	<div id="editability">
+    <button id="enable" class="btn btn-default">edit profile</button>
+  </div>
+  <div class="row">
   		<div class="col-md-3 col-sm-4" id="profile-column-left">
   			<div id="doula-profile-pic"> <img width="150" src="/static/images/uploads/AvivaLipkowitz.jpg"> 
         </div>
@@ -91,8 +94,15 @@
       $(document).ready(function() {
       
         //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
-        $('.editable').editable();
+        // $('.editable').editable();
+
+        $('#enable').click(function() {
+          $('.editable').editable('toggleDisabled');
+
+        })
       });
+
+
     </script>
 
 {% endblock %}

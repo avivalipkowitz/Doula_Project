@@ -1,14 +1,14 @@
 build html templates
-	DONE index
-	DONE login
+	[DONE] index
+	[DONE] login
 	sign-up doulas
-		DONE make sure that password matches password_again
+		[DONE] make sure that password matches password_again
 		add in checklist of all the services they might offer, to store in doula_services table
-	DONE sign-up parents
+	[DONE] sign-up parents
 		make sure that password matches password_again
-	DONE search
-	DONE search results
-	DONE parent profile
+	[DONE] search
+	[DONE] search results
+	[DONE] parent profile
 	about
 	contact
 	reviews
@@ -17,11 +17,11 @@ build fancy components
 	personality maps
 	messaging system
 database
-	DECIDED AGAINST do mongo tutuorial
-	DONE decide on database structure
+	[DECIDED AGAINST] do mongo tutuorial
+	[DONE] decide on database structure
 	design architecture
-	DONE doula table
-	DONE parent table
+	[DONE] doula table
+	[DONE] parent table
 	doula services table
 	get test cases loaded
 	populate tables with fake data
@@ -35,8 +35,8 @@ style
 		[DONE] get parent/doula jumbotrons side by side 
 	[DONE] set login styles 
 	[DONE] set signup styles 
-	set doula profile styles
-	set parent profile styles
+	[DONE] set doula profile styles
+	[DONE] set parent profile styles
 	[DONE] set search styles
 	[DONE] set search result styles
 
@@ -52,5 +52,17 @@ branding
 	[DONE] get a logo
 	[DONE] remake banner
 	[DONE] decide on color scheme
+
+forms
+	wtforms
+
+testing/security
+	unit tests
+	threat modeling
+		decompose the application - id app use cases/entry points
+		determine and rank threats
+		determine countermeasures and mitigation
+	salt(?) passwords
+
 
 	
