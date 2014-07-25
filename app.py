@@ -3,6 +3,8 @@ from flask.ext.login import LoginManager, login_required, logout_user, login_use
 from flask.ext.principal import Principal, Permission, RoleNeed
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import requests
+import json
 import jinja2
 import model
 import os
@@ -247,6 +249,11 @@ def process_signup_parent():
 	unicode_due_date = f.get('due_date')
 	due_date = datetime.datetime.strptime(unicode_due_date, "%Y-%m-%d")
 
+	# geocode API
+	lat, lng = geocode_zipcode(zipcode)
+	print "lat: %r, lng: %r" %(lat, lng)
+
+
 
 	#check that passwords match
 	if password != password_again:
@@ -267,6 +274,8 @@ def process_signup_parent():
 							lastname = last_name,
 							
 							zipcode = zipcode,
+							zipcode_lat = lat,
+							zipcode_lng = lng,
 							price_min = price_min,
 							price_max = price_max,
 							background = background_nar,
@@ -292,7 +301,15 @@ def process_signup_parent():
 
 		return redirect('/login')
 
+def geocode_zipcode(zipcode):
+	key = os.environ.get('GOOGLE_MAPS_API_KEY')
+	resp =requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s' %(zipcode, key))
+	g = json.loads(resp.text)
 
+	lng = g['results'][0]['geometry']['location']['lng']
+	lat = g['results'][0]['geometry']['location']['lat']
+	zip_coord = (lat, lng)
+	return zip_coord
 
 @app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
 # @login_required
