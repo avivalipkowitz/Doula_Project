@@ -5,14 +5,24 @@
 <h2>Find doulas in your area</h2>
 	<form action="/search" method="post">
 		<!--??? what do dl and dd and dt do? ??? -->
-		<dl> 
-			<dt>Search for doulas by zipcode:
-			<dd><input type="search" name="doula_zip_search" placeholder="zipcode">
-			<dd><input type="submit" value="Search">
-		</dl>
-	</form>
-	<form id="search-all" action="/list_all" method="post">
-		<input type="submit" value="List all">
+		 
+		<p>Find all doulas within
+				<select name="zip_radius">
+					<option value="5mi">5</option>
+					<option value="10mi">10</option>
+					<option value="25mi">25</option>
+					<option value="50mi">50</option>
+				</select>
+				miles of zipcode
+				<input type="search" name="doula_zip_search" placeholder="zipcode">
+				<input type="submit" value="Search">
+		</p>
 	</form>
 
+
+	<p>Or,
+	<form id="search-all" action="/list_all" method="post">
+		<input type="submit" value="list all doulas">
+	</form>
+	</p>
 {% endblock %}

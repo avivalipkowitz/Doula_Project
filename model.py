@@ -28,6 +28,13 @@ Base.query = session.query_property()
 # Add a User(Base) class that has all common attributes between 
 # Parent and Doula, so that this doesn't have to be replicated
 
+# Methods from salty passwords tutorial. I don't think they should be class methods though, so I pulled them out here.
+def set_password(password):
+	pw_hash = generate_password_hash(password)
+	return pw_hash
+
+def check_password(password):
+	return check_password_hash(pw_hash, password)
 
 class Doula(Base):
 	__tablename__ = "doulas"
@@ -53,11 +60,7 @@ class Doula(Base):
 	
 
 	# From flask password salt turtorial
-	def set_password(self, password):
-		self.pw_hash = generate_password_hash(password)
 
-	def check_password(self, password):
-		return check_password_hash(self.pw_hash, password)
 
 	def is_authenticated(self):
 		return True

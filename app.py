@@ -185,7 +185,8 @@ def process_signup_doula():
 		return redirect('/signup_doula')
 
 	else:
-		hashed_password = model.pw_hash(password)
+		hashed_password = model.set_password(password)
+		print "hashed pw is %r" %hashed_password 
 		doula = model.Doula(email = email, 
 							password = hashed_password, 
 							firstname = first_name,
@@ -272,7 +273,6 @@ def process_signup_parent():
 							password = password, 
 							firstname = first_name,
 							lastname = last_name,
-							
 							zipcode = zipcode,
 							zipcode_lat = lat,
 							zipcode_lng = lng,
@@ -351,13 +351,18 @@ def display_search_results():
 	f = request.form
 
 	doula_zip = f.get('doula_zip_search')
-	
-	doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
-	return render_template('search-results.html', doula_list = doula_list)
+	zip_radius = f.get('zip_radius')
+
+	if zip_radius == "5mi":
+	# 	lat_min = ??
+		doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
+		return render_template('search-results.html', doula_list = doula_list)
+		
 
 @app.route('/list_all', methods = ['POST'])
 def list_all_doulas():
 	all_doula_list = model.session.query(model.Doula).all()
+
 	return render_template('search-results.html', doula_list = all_doula_list)
 
 @app.route('/doula_edit', methods = ['POST'])
