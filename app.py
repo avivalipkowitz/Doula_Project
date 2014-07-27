@@ -12,6 +12,7 @@ from werkzeug.utils import secure_filename
 import datetime
 
 import api_helpers 
+import helpers
 
 SECRET_KEY = "fish"
 
@@ -258,9 +259,13 @@ def process_signup_parent():
 
 
 	#check that passwords match
-	if password != password_again:
+	if not helpers.password_check(password, password_again):
 		flash("Passwords do not match. Please enter your password again.")
 		return redirect('/signup_doula')
+			
+	# if password != password_again:
+	# 	flash("Passwords do not match. Please enter your password again.")
+	# 	return redirect('/signup_doula')
 
 	
 	# check to see if user already exists
