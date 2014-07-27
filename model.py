@@ -29,12 +29,12 @@ Base.query = session.query_property()
 # Parent and Doula, so that this doesn't have to be replicated
 
 # Methods from salty passwords tutorial. I don't think they should be class methods though, so I pulled them out here.
-def set_password(password):
-	pw_hash = generate_password_hash(password)
-	return pw_hash
+# def set_password(password):
+# 	pw_hash = generate_password_hash(password)
+# 	return pw_hash
 
-def check_password(password):
-	return check_password_hash(pw_hash, password)
+# def check_password(password):
+# 	return check_password_hash(pw_hash, password)
 
 class Doula(Base):
 	__tablename__ = "doulas"
