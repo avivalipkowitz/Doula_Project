@@ -302,17 +302,6 @@ def process_signup_parent():
 
 		return redirect('/login')
 
-# Now living in api_helper.py
-# def geocode_zipcode(zipcode):
-# 	key = os.environ.get('GOOGLE_MAPS_API_KEY')
-# 	resp =requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s' %(zipcode, key))
-# 	g = json.loads(resp.text)
-
-# 	lng = g['results'][0]['geometry']['location']['lng']
-# 	lat = g['results'][0]['geometry']['location']['lat']
-# 	zip_coord = (lat, lng)
-# 	return zip_coord
-
 @app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
 # @login_required
 def display_doula_profile(id):
