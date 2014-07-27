@@ -1,0 +1,5 @@
+.notes
+env/
+TODO_list.txt
+*.pyc
+.env

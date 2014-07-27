@@ -11,6 +11,7 @@ import os
 from werkzeug.utils import secure_filename
 import datetime
 
+import api_helpers 
 
 SECRET_KEY = "fish"
 
@@ -251,7 +252,7 @@ def process_signup_parent():
 	due_date = datetime.datetime.strptime(unicode_due_date, "%Y-%m-%d")
 
 	# geocode API
-	lat, lng = geocode_zipcode(zipcode)
+	lat, lng = api_helpers.geocode_zipcode(zipcode)
 	print "lat: %r, lng: %r" %(lat, lng)
 
 
@@ -301,15 +302,16 @@ def process_signup_parent():
 
 		return redirect('/login')
 
-def geocode_zipcode(zipcode):
-	key = os.environ.get('GOOGLE_MAPS_API_KEY')
-	resp =requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s' %(zipcode, key))
-	g = json.loads(resp.text)
+# Now living in api_helper.py
+# def geocode_zipcode(zipcode):
+# 	key = os.environ.get('GOOGLE_MAPS_API_KEY')
+# 	resp =requests.get('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s' %(zipcode, key))
+# 	g = json.loads(resp.text)
 
-	lng = g['results'][0]['geometry']['location']['lng']
-	lat = g['results'][0]['geometry']['location']['lat']
-	zip_coord = (lat, lng)
-	return zip_coord
+# 	lng = g['results'][0]['geometry']['location']['lng']
+# 	lat = g['results'][0]['geometry']['location']['lat']
+# 	zip_coord = (lat, lng)
+# 	return zip_coord
 
 @app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
 # @login_required
@@ -357,7 +359,7 @@ def display_search_results():
 	# 	lat_min = ??
 		doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
 		return render_template('search-results.html', doula_list = doula_list)
-		
+
 
 @app.route('/list_all', methods = ['POST'])
 def list_all_doulas():
