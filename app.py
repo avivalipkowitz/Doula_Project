@@ -15,6 +15,7 @@ import passwords
 import users
 
 SECRET_KEY = "fish"
+UPLOAD_FOLDER = 'static/images/uploads'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -129,6 +130,7 @@ def process_signup_doula():
 		return redirect('/signup_doula')
 
 	else:
+		lat, lng = api_helpers.geocode_zipcode(zipcode)
 		hashed_password = passwords.set_password(password)
 		doula = model.Doula(email = email, 
 							password = hashed_password, 
@@ -141,7 +143,9 @@ def process_signup_doula():
 							price_max = price_max,
 							background = background_nar,
 							services = services_nar,
-							zipcode = zipcode
+							zipcode = zipcode,
+							zipcode_lat = lat,
+							zipcode_lng = lng
 							)
 
 		model.session.add(doula)
@@ -256,12 +260,18 @@ def display_search_results():
 
 	# TODO LOCATOR: api_helpers method 
 	doula_zip = f.get('doula_zip_search')
-	zip_radius = f.get('zip_radius')
+	search_radius = int(f.get('zip_radius'))
+	lat, lng = api_helpers.geocode_zipcode(doula_zip)
+	print "lat is %r lng is %r" %(lat, lng)
 
-	if zip_radius == "5mi":
-	# 	lat_min = ??
-		doula_list = model.session.query(model.Doula).filter_by(zipcode = doula_zip).all()
-		return render_template('search-results.html', doula_list = doula_list)
+	min_lat, max_lat = api_helpers.min_max_lat_search(lat, search_radius)
+	min_lng, max_lng = api_helpers.min_max_lng_search(lng, search_radius)
+
+ 	doula_list = api_helpers.zip_radius_search(min_lat, max_lat, min_lng, max_lng)
+
+ 	print "doula list is %r" % doula_list
+		
+	return render_template('search-results.html', doula_list = doula_list)
 
 # TODO: def list_all_users(role)
 @app.route('/list_all', methods = ['POST'])

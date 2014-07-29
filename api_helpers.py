@@ -1,6 +1,7 @@
 import requests
 import json
 import os
+import model
 
 def geocode_zipcode(zipcode):
 	
@@ -16,3 +17,28 @@ def geocode_zipcode(zipcode):
 	zip_coord = (lat, lng)
 	
 	return zip_coord
+
+
+def min_max_lat_search(lat, search_radius):
+# lat is approximately 0.01237125 degrees per mile
+# redo later to account for curvature of the earth
+	min_lat = lat - (search_radius * 0.01237125)
+	max_lat = lat + (search_radius * 0.01237125)
+	return (min_lat, max_lat)
+
+def min_max_lng_search(lng, search_radius):
+# lng is approximately 0.0151902 degrees per mile
+# redo later to account for curvature of the earth
+	min_lng = lng - (search_radius * 0.0151902)
+	max_lng = lng + (search_radius * 0.0151902)
+	return (min_lng, max_lng)
+
+
+def zip_radius_search(min_lat, max_lat, min_lng, max_lng):
+	doula_list = model.session.query(model.Doula).\
+		filter(model.Doula.zipcode_lat >= min_lat).\
+		filter(model.Doula.zipcode_lat <= max_lat).\
+		filter(model.Doula.zipcode_lng >= min_lng).\
+		filter(model.Doula.zipcode_lng <= max_lng).all()
+
+	return doula_list

@@ -20,8 +20,10 @@ def which_database(role):
 	# TODO: explain why this is here wrt to database
 	if role == "doula":
 		return model.Doula
-	else:
-		return model.Parent		
+	elif role == "parent":
+		return model.Parent
+
+	return None		
 
 def save_user_image(user, pic, role):
 	if pic and allowed_file(pic.filename):
