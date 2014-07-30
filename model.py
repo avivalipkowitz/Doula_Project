@@ -7,13 +7,17 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 #from ratings tutorial
 ENGINE = None
 Session = None
 
 # from ratings model.py
-engine = create_engine("sqlite:///doulahoop.db", echo = False)
+# engine = create_engine("sqlite:///doulahoop.db", echo = False)
+print "[model] DATABASE_URL: ", os.environ.get('DATABASE_URL')
+engine = create_engine(os.environ.get('DATABASE_URL', "sqlite:///doulahoop.db"), echo = False)
+
 session = scoped_session(sessionmaker(bind = engine,
 									  autocommit = False,
 									  autoflush = False))
@@ -77,6 +81,8 @@ class Doula(Base):
 	def is_doula(self):
 		return True
 
+	def parse_form_data(self, data):
+		self.email = data.get('email')
 
 class Parent(Base):
 	__tablename__ = "parents"

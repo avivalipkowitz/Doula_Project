@@ -67,14 +67,13 @@ def process_login():
 	password = f.get('password')
 	role = f.get('role')
 
-	# TODO: require radio selection of role
-	# else:
-	# 	flash("invalid role--check the user type, fool")
-	# 	return redirect('/login')
-
-	user = model.session.query(users.which_database(role)).filter_by(email = email).filter_by(password = password).first()
+	user = model.session.query(users.which_database(role)).filter_by(email = email).first()
 
 	if not user:
+		flash("Invalid login")
+		return redirect('/login')
+
+	if not passwords.check_password_hash(user.password, password):
 		flash("Invalid login")
 		return redirect('/login')
 	else:
@@ -83,7 +82,7 @@ def process_login():
 		flash("You successfully logged in!")
 		id = user.id
 
-		return redirect(request.args.get('next')  or ('/'))
+		return redirect(request.args.get('next')  or ('/%s/%s') %(role, id))
 
 @app.route('/logout')
 @login_required
@@ -107,15 +106,6 @@ def process_signup_doula():
 	password = f.get('password')
 	password_again = f.get('password_again')
 	email = f.get('email')
-	first_name = f.get('firstname')
-	last_name = f.get('lastname')
-	practice_name = f.get('practice')
-	phone_number = f.get('phone')
-	website = f.get('website')
-	price_min = f.get('price_min')
-	price_max = f.get('price_max')
-	background_nar = f.get('background_nar')
-	services_nar = f.get('services')
 	zipcode = f.get('zip')
 
 	if not passwords.password_check(password, password_again):
@@ -132,21 +122,26 @@ def process_signup_doula():
 	else:
 		lat, lng = api_helpers.geocode_zipcode(zipcode)
 		hashed_password = passwords.set_password(password)
-		doula = model.Doula(email = email, 
-							password = hashed_password, 
-							firstname = first_name,
-							lastname = last_name,
-							practice = practice_name,
-							phone = phone_number,
-							website = website,
-							price_min = price_min,
-							price_max = price_max,
-							background = background_nar,
-							services = services_nar,
-							zipcode = zipcode,
-							zipcode_lat = lat,
-							zipcode_lng = lng
-							)
+
+		doula = model.Doula()
+		doula.parse_form_data(request.form)
+
+		# don't need this as long as i have above code
+		# doula = model.Doula(email = email, 
+		# 					password = hashed_password, 
+		# 					firstname = first_name,
+		# 					lastname = last_name,
+		# 					practice = practice_name,
+		# 					phone = phone_number,
+		# 					website = website,
+		# 					price_min = price_min,
+		# 					price_max = price_max,
+		# 					background = background_nar,
+		# 					services = services_nar,
+		# 					zipcode = zipcode,
+		# 					zipcode_lat = lat,
+		# 					zipcode_lng = lng
+		# 					)
 
 		model.session.add(doula)
 		model.session.commit()
@@ -183,8 +178,6 @@ def process_signup_parent():
 	unicode_due_date = f.get('due_date')
 	due_date = datetime.datetime.strptime(unicode_due_date, "%Y-%m-%d")
 
-	lat, lng = api_helpers.geocode_zipcode(zipcode)
-
 	if not passwords.password_check(password, password_again):
 		flash("Passwords do not match. Please enter your password again.")
 		return redirect('/signup_parent')
@@ -197,8 +190,10 @@ def process_signup_parent():
 
 
 	else:
+		hashed_password = passwords.set_password(password)
+		lat, lng = api_helpers.geocode_zipcode(zipcode)
 		parent = model.Parent(email = email, 
-							password = password, 
+							password = hashed_password, 
 							firstname = first_name,
 							lastname = last_name,
 							zipcode = zipcode,
@@ -223,11 +218,13 @@ def process_signup_parent():
 @app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
 def display_doula_profile(id):
 	doula = model.session.query(model.Doula).get(id)
+	suggested_doula_list = users.suggest_doulas()
 
-	return render_template('doula-profile.html', doula = doula)
+	return render_template('doula-profile.html', doula = doula,
+												suggested_doula_list = suggested_doula_list)
 
 
-@app.route('/user/<int:id>') #change this route to include the parents's <int:id> in the url
+@app.route('/parent/<int:id>') #change this route to include the parents's <int:id> in the url
 @login_required
 def display_user_profile(id):
 
@@ -245,6 +242,8 @@ def display_user_profile(id):
 		
 
 	due_date = parent.due_date.strftime("%m/%d/%y")
+
+	
 
 	return render_template('user-profile.html', parent = parent,
 												due_date = due_date)
