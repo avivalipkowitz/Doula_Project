@@ -1,6 +1,7 @@
 from flask import Flask, Response, request, session, render_template, g, redirect, url_for, flash
 from flask.ext.login import LoginManager, login_required, logout_user, login_user, current_user
 import model
+import api_helpers
 import os
 from random import randint
 
@@ -27,6 +28,29 @@ def which_database(role):
 
 	return None		
 
+# TODO: combine these two functions into one that uses role to determine db
+def db_add_doula(doula_dict):
+	# TODO: Needs test
+	d = model.Doula()
+	
+	d.parse_form_data(doula_dict)
+	lat, lng = api_helpers.geocode_zipcode(doula_dict['zipcode'])
+	d.store_coordinates(lat, lng)
+
+	model.session.add(d)
+	model.session.commit()
+
+def db_add_parent(parent_dict):
+	# TODO: Needs test
+	d = model.Parent()
+	
+	d.parse_form_data(parent_dict)
+	lat, lng = api_helpers.geocode_zipcode(parent_dict['zipcode'])
+	d.store_coordinates(lat, lng)
+
+	model.session.add(d)
+	model.session.commit()
+
 def save_user_image(user, pic, role):
 	if pic and allowed_file(pic.filename):
 		filename = "%s_%s.%s" % (role, user.id, file_extension(pic.filename))
@@ -49,22 +73,5 @@ def suggest_doulas():
 		suggested_doula_list.append(doula)
 	return suggested_doula_list
 
-# TODO: needs a test
-def parse_doula_form_data(f):
-	doula_data_dict = {}
-
-	password = f.get('password')
-	password_again = f.get('password_again')
-	email = f.get('email')
-	first_name = f.get('firstname')
-	last_name = f.get('lastname')
-	practice_name = f.get('practice')
-	phone_number = f.get('phone')
-	website = f.get('website')
-	price_min = f.get('price_min')
-	price_max = f.get('price_max')
-	background_nar = f.get('background_nar')
-	services_nar = f.get('services')
-	zipcode = f.get('zip')
 
 

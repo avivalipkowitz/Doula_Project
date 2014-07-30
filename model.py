@@ -8,6 +8,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+import passwords
 
 #from ratings tutorial
 ENGINE = None
@@ -93,8 +94,27 @@ class Doula(Base):
 	def parse_form_data(self, data):
 	# this needs to include every field that will be saved in the database
 		self.email = data.get('email')
-		self.password = data.get('password')
 		self.firstname = data.get('firstname')
+		self.lastname = data.get('lastname')
+		self.price_min = data.get('price_min')
+		self.price_max = data.get('price_max')
+		self.background = data.get('background')
+		self.image = data.get('image')
+		self.zipcode = data.get('zipcode')
+		self.practice = data.get('practice')
+		self.phone = data.get('phone')
+		self.website = data.get('website')
+		self.services = data.get('services')
+
+		password = data.get('password')
+		hashed_pw = passwords.set_password(password)
+		self.password = hashed_pw
+
+	def store_coordinates(self, lat, lng):
+		self.zipcode_lat = lat
+		self.zipcode_lng = lng
+
+
 
 class Parent(Base):
 	__tablename__ = "parents"

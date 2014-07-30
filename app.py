@@ -125,24 +125,7 @@ def process_signup_doula():
 
 		doula = model.Doula()
 		doula.parse_form_data(request.form)
-
-		# don't need this as long as i have above code
-		# doula = model.Doula(email = email, 
-		# 					password = hashed_password, 
-		# 					firstname = first_name,
-		# 					lastname = last_name,
-		# 					practice = practice_name,
-		# 					phone = phone_number,
-		# 					website = website,
-		# 					price_min = price_min,
-		# 					price_max = price_max,
-		# 					background = background_nar,
-		# 					services = services_nar,
-		# 					zipcode = zipcode,
-		# 					zipcode_lat = lat,
-		# 					zipcode_lng = lng
-		# 					)
-
+		doula.store_coordinates(lat, lng)
 		model.session.add(doula)
 		model.session.commit()
 		
@@ -260,15 +243,14 @@ def display_search_results():
 	# TODO LOCATOR: api_helpers method 
 	doula_zip = f.get('doula_zip_search')
 	search_radius = int(f.get('zip_radius'))
+	
+	# put next three lines in function in helper
 	lat, lng = api_helpers.geocode_zipcode(doula_zip)
-	print "lat is %r lng is %r" %(lat, lng)
 
 	min_lat, max_lat = api_helpers.min_max_lat_search(lat, search_radius)
 	min_lng, max_lng = api_helpers.min_max_lng_search(lng, search_radius)
 
  	doula_list = api_helpers.zip_radius_search(min_lat, max_lat, min_lng, max_lng)
-
- 	print "doula list is %r" % doula_list
 		
 	return render_template('search-results.html', doula_list = doula_list)
 
