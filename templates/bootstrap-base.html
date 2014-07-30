@@ -42,7 +42,6 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -71,8 +70,11 @@
     </div>
 
     <div class="container">
-      <div class="banner">
-        <img src="/static/images/hulahoop_banner.png">
+      <div class="row">
+        <div class="col-sm-12 text-center">
+          <img class="logo" src="/static/images/hulahoop_banner.png">
+        </div>
+        
       </div>
       <!-- ADD IN SPOT FOR FLASH MESSAGES HERE -->
       {% with messages = get_flashed_messages() %}

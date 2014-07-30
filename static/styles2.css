@@ -6,35 +6,33 @@ dl dd {
 	display: inline-block;
 }
 
-#index-top-box {
-	text-align: center;
-	top: 10px;
-
+.logo{
+	width: 100%;
+	height: auto;
+}
+.box{
+	background-color: #307B7B;
+	color: #EEF5F5;
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
 }
 
-#index-top-box h2 {
+.row a{
+	text-decoration: none;
+}
+
+.box:hover{
+	background-color: #59CDAC;
+}
+
+.subtitle{
 	font-weight: lighter;
 	color: #BBB;
 }
 
 
-
-#index-bottom-box {
-	top: 200px;
-	text-align: center;
-}
-
-#index-bottom-box div {
-	display: inline-block;
-	width: 350px;
-	left: 10px;
-	top: 10px;
-}
-
-#index-bottom-box div div {
-	background-color: #307B7B;
-	color: #EEF5F5;
-}
 
 .jumbotron {
 	border: white;
