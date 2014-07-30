@@ -241,14 +241,10 @@ def display_search_results():
 	f = request.form
 
 	# TODO LOCATOR: api_helpers method 
-	doula_zip = f.get('doula_zip_search')
+	search_zip = f.get('doula_zip_search')
 	search_radius = int(f.get('zip_radius'))
 	
-	# put next three lines in function in helper
-	lat, lng = api_helpers.geocode_zipcode(doula_zip)
-
-	min_lat, max_lat = api_helpers.min_max_lat_search(lat, search_radius)
-	min_lng, max_lng = api_helpers.min_max_lng_search(lng, search_radius)
+	min_lat, max_lat, min_lng, max_lng = api_helpers.create_bounding_box(search_zip, search_radius)
 
  	doula_list = api_helpers.zip_radius_search(min_lat, max_lat, min_lng, max_lng)
 		

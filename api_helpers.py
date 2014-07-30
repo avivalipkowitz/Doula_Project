@@ -33,7 +33,16 @@ def min_max_lng_search(lng, search_radius):
 	max_lng = lng + (search_radius * 0.0151902)
 	return (min_lng, max_lng)
 
+# TODO: create test for this in tests.py
+def create_bounding_box(search_zip, radius):
+	lat, lng = geocode_zipcode(search_zip)
 
+	min_lat, max_lat = min_max_lat_search(lat, radius)
+	min_lng, max_lng = min_max_lng_search(lng, radius)
+
+	return (min_lat, max_lat, min_lng, max_lng)
+
+# TODO: create test for this in db_tests.py
 def zip_radius_search(min_lat, max_lat, min_lng, max_lng):
 	doula_list = model.session.query(model.Doula).\
 		filter(model.Doula.zipcode_lat >= min_lat).\

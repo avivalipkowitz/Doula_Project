@@ -16,27 +16,39 @@ class TestFunctions(unittest.TestCase):
 
 	# test min_max_lat_search and min_max_lng_search functions, which generate the bouding box coordinates
 	def test_min_max_lat_search(self):
-		lat = 37
+		lat = 37.8113159
 		search_radius = 5
-		min_lat = 37 - (5 * 0.01237125)
-		max_lat = 37 + (5 * 0.01237125)
+		min_lat = lat - (search_radius * 0.01237125)
+		max_lat = lat + (search_radius * 0.01237125)
 
 		min_max_lat = (min_lat, max_lat)
 
-		self.assertEqual(api_helpers.min_max_lat_search(37, 5), min_max_lat)
+		self.assertEqual(api_helpers.min_max_lat_search(37.8113159, 5), min_max_lat)
 
 
 	def test_min_max_lng_search(self):
-		lat = -122
+		lng = -122.2682245
 		search_radius = 5
-		min_lng = -122 - (5 * 0.0151902)
-		max_lng = -122 + (5 * 0.0151902)
+		min_lng = lng - (search_radius * 0.0151902)
+		max_lng = lng + (search_radius * 0.0151902)
 
 		min_max_lng = (min_lng, max_lng)
 
-		self.assertEqual(api_helpers.min_max_lng_search(-122, 5), min_max_lng)
-		
+		self.assertEqual(api_helpers.min_max_lng_search(-122.2682245, 5), min_max_lng)
 
+	# test bounding_box function, which returns the bounding coordinates, using search_zip and search_radius
+	def test_create_bounding_box(self):
+		lat = 37.8113159
+		lng = -122.2682245
+		search_radius = 5
+		min_lat = lat - (search_radius * 0.01237125)
+		max_lat = lat + (search_radius * 0.01237125)
+		min_lng = lng - (search_radius * 0.0151902)
+		max_lng = lng + (search_radius * 0.0151902)
+
+		bounding_box = (min_lat, max_lat, min_lng, max_lng)
+
+		self.assertEqual(api_helpers.create_bounding_box(94612, 5), bounding_box)
 	
 
 
