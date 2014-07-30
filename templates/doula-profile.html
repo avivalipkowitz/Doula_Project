@@ -4,7 +4,9 @@
 
 <div class="container">
 	<div id="editability">
-    <button id="enable" class="btn btn-default">edit profile</button>
+    {% if current_user == doula %}
+      <button id="enable" class="btn btn-default">edit profile</button>
+    {% endif %}
   </div>
   <div class="row">
   		<div class="col-md-3 col-sm-4" id="profile-column-left">
@@ -26,11 +28,12 @@
         </h2>
   			<h4> Website</h4> 
           <a href="{{ doula.website }}">{{ doula.website }}</a>
+          {% if current_user == doula %}
           <span class="glyphicon glyphicon-pencil"></span>
           <!--  Still have to figure out where all this fits in
           <a href="#" class="editable" data-type="text" pata-pk="{{ doula.id }}" data-name="website" data-original-title title data-url="/doula_edit" data-title="Enter your website URL">
           </a> -->
-          
+          {% endif %}
           
   			<h4> Phone </h4>
           <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="phone" data-original-title title data-url="/doula_edit" data-title="Enter your phone number"> {{ doula.phone }}</a>
@@ -48,37 +51,17 @@
 
   		<div class="col-md-3 col-sm-12" id="profile-column-right">
         <p>Similar Doulas</p>
+        {% for doula in suggested_doula_list %}
   			<div class="doula-suggestion col-md-12 col-sm-4">
           <div class="col-sm-6" id="suggestion-1-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>doula1</p>
+            <img width=50 src="/static/images/uploads/{{ doula.image }}">
+            <p> {{ doula.firstname }} {{ doula.lastname }}</p>
           </div>
           <div class="col-sm-6" id="suggestion-1-desc"> 
-            <p>Name</p>
-            <p>location<p>
+            <p>{{ doula.zipcode }}<p>
           </div>
         </div>
-
-  			<div class="doula-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-2-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>doula2</p>
-          </div>
-          <div class="col-sm-6" id="suggestion-2-desc"> 
-            <p>Name</p>
-            <p>location<p>
-          </div>
-        </div>
-  			<div class="doula-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-3-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>doula3</p>
-          </div>
-          <div class="col-sm-6" id="suggestion-3-desc"> 
-            <p>Name</p>
-            <p>location<p>
-          </div>
-        </div>
+        {% endfor %}
       </div>
 	</div>
 </div>
@@ -88,21 +71,21 @@
 
 {% block script %}
  <!-- preferably keep this just on the pages that are editable (profile pages) -->
+  if doula == curent_user:  
     <script>
-      $.fn.editable.defaults.mode = 'popup';
+      {% if current_user == doula %}
+        $.fn.editable.defaults.mode = 'popup';
 
-      $(document).ready(function() {
-      
-        //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
-        // $('.editable').editable();
+        $(document).ready(function() {
+        
+          //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
+          // $('.editable').editable();
 
-        $('#enable').click(function() {
-          $('.editable').editable('toggleDisabled');
-
-        })
-      });
-
-
+          $('#enable').click(function() {
+            $('.editable').editable('toggleDisabled');
+          })
+        });
+      {% endif %}
     </script>
 
 {% endblock %}

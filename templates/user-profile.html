@@ -5,7 +5,9 @@
 
 <div class="container">
   <div id="editability">
-    <button id="enable" class="btn btn-default">edit profile</button>
+    {% if current_user == parent %}    
+      <button id="enable" class="btn btn-default">edit profile</button>
+    {% endif %}
   </div>
   <div class="row">
       <div class="col-md-4 col-sm-5" id="profile-column-left">
@@ -73,23 +75,26 @@
 {% endblock %}
 
 {% block script %}
+     
     <script>  
       $(function() {
         $( "#calendar" ).datepicker({ defaultDate: "{{ due_date }}" });
       });
     </script>
 
+
     <script>
-      $.fn.editable.defaults.mode = 'popup';
+      if current_user == {{ parent }}:  
+        $.fn.editable.defaults.mode = 'popup';
 
-      $(document).ready(function() {
-      
-        //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
-        $('#enable').click(function() {
-          $('.editable').editable('toggleDisabled');
+        $(document).ready(function() {
+        
+          //assume server response: 200 Ok {status: 'error', msg: 'field cannot be empty!'}
+          $('#enable').click(function() {
+            $('.editable').editable('toggleDisabled');
 
-        })
-      });
+          })
+        });
     </script>
 {% endblock %}
 

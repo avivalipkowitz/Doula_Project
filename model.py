@@ -26,6 +26,15 @@ session = scoped_session(sessionmaker(bind = engine,
 Base = declarative_base()
 Base.query = session.query_property()
 
+def connect_db(db):
+	engine = create_engine(db, echo = False)
+	session = scoped_session(sessionmaker(bind = engine,
+									  autocommit = False,
+									  autoflush = False))
+	print "[model] DATABASE_URL: ", os.environ.get('DATABASE_URL')
+
+def create_db():
+	Base.metadata.create_all(engine)
 
 # From ratings model.py
 # Class declarations
@@ -82,7 +91,10 @@ class Doula(Base):
 		return True
 
 	def parse_form_data(self, data):
+	# this needs to include every field that will be saved in the database
 		self.email = data.get('email')
+		self.password = data.get('password')
+		self.firstname = data.get('firstname')
 
 class Parent(Base):
 	__tablename__ = "parents"

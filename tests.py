@@ -37,10 +37,7 @@ class TestFunctions(unittest.TestCase):
 		self.assertEqual(api_helpers.min_max_lng_search(-122, 5), min_max_lng)
 		
 
-	# TODO: LEAVE TEST THAT INVOLVE DATABASE QUERIES FOR TOMORROW
-	# test def zip_radius_search, which queries the database for doulas in that bounding box, and returns doula_list
-	# def test_zip_radius_search(self):
-		
+	
 
 
 
@@ -55,11 +52,11 @@ class TestFunctions(unittest.TestCase):
 		self.assertNotEqual(users.allowed_file(bad_filename), True)
 
 	# returns the extension string
-	#def test_file_extension():
-
-
-	
-		
+	def test_file_extension(self):
+		filename = "profile.jpg"
+		bad_filename = "profile"
+		self.assertEqual(users.file_extension(filename), "jpg")
+		# this should also be testing to make sure that you can't submit a filename with no extension, but I have yet to write that into the function	
 
 	# checks the role in order to query the correct database
 	def test_which_database(self):
@@ -67,14 +64,9 @@ class TestFunctions(unittest.TestCase):
 		self.assertEqual(users.which_database("parent"), model.Parent)
 		self.assertEqual(users.which_database("asdf"), None)
 
-	# def test_save_ser_image(self):
-	# 	pass
 
 
-# OTHER TESTS
 
-	# def test_api_key(self):
-	# 	pass
 
 
 if __name__ == '__main__':
