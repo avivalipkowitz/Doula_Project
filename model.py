@@ -92,7 +92,6 @@ class Doula(Base):
 		return True
 
 	def parse_form_data(self, data):
-	# this needs to include every field that will be saved in the database
 		self.email = data.get('email')
 		self.firstname = data.get('firstname')
 		self.lastname = data.get('lastname')
@@ -136,6 +135,25 @@ class Parent(Base):
 	ideal_doula_nar = Column(Text, nullable = True)
 	visibility = Column(String(64), nullable = True)
 	due_date = Column(DateTime, nullable = True)
+
+
+	def parse_form_data(self, data):
+		self.email = data.get('email')
+		self.firstname = data.get('firstname')
+		self.lastname = data.get('lastname')
+		self.price_min = data.get('price_min')
+		self.price_max = data.get('price_max')
+		self.background = data.get('background')
+		self.image = data.get('image')
+		self.zipcode = data.get('zipcode')
+		self.practice = data.get('practice')
+		self.phone = data.get('phone')
+		self.website = data.get('website')
+		self.services = data.get('services')
+
+		password = data.get('password')
+		hashed_pw = passwords.set_password(password)
+		self.password = hashed_pw
 
 
 	def is_authenticated(self):

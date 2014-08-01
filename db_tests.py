@@ -7,10 +7,14 @@ import model
 import passwords
 
 
-class DoulaDBTest(unittest.TestCase):
+
+class TestDBFunctions(unittest.TestCase):
 	@classmethod
 	def setUpClass(self):
 		print "in setup class"
+		#reset test database
+		model.session.execute('DELETE FROM doulas') 
+		model.session.execute('DELETE FROM parents')
 		model.create_db()
 
 		# Populate some sample doula data to use in our tests
@@ -20,13 +24,11 @@ class DoulaDBTest(unittest.TestCase):
 		print "in class teardown"
 		# delete doulas from db
 
-class TestDBFunctions(DoulaDBTest):
 	
 	def setUp(self):
+		pass
 
-		print "yo dawg"
-
-# TESTS FUNCTIONS FROM api_helpers.py
+	# TESTS FUNCTIONS FROM api_helpers.py
 	# testing geocode_zipcode function
 	# geocode_zipcode changes zipcode into coordinates
 	def test_example(self):
@@ -41,9 +43,9 @@ class TestDBFunctions(DoulaDBTest):
 			'firstname': 'First',
 			'lastname': 'Last',
 			'practice': 'DoulaTime',
-			'zipcode': '94121',
-			'zipcode_lat': 37.7813454,
-			'zipcode_lng': -122.497668,
+			'zipcode': '21043',
+			'zipcode_lat': 39.2369558,
+			'zipcode_lng': -76.79135579999999,
 			'website': 'http://www.test.com',
 			'price_min': 300,
 			'price_max': 500,
@@ -53,8 +55,8 @@ class TestDBFunctions(DoulaDBTest):
 			'phone': '555-555-5555'
 
 		}
-		lat = 37
-		lng = -121
+		lat = 39.2369558
+		lng = -76.79135579999999
 
 		users.db_add_doula(data)
 
@@ -78,8 +80,53 @@ class TestDBFunctions(DoulaDBTest):
 		self.assertEqual(doula_check.image, data['image'])
 		self.assertEqual(doula_check.phone, data['phone'])
 
-	# def test_save_user_image(self):
-	# 	pass
+	def test_02_create_parent(self):
+		# test set-up
+
+		data = {
+			'email': 'test@test.com',
+			'password': "ssshdon'ttell",
+			'firstname': 'First',
+			'lastname': 'Last',
+			'price_min': 300,
+			'price_max': 500,
+			'background': 'I really love my job!',
+			'image': 'parent_1.jpg',
+			'zipcode': '21043',
+			'zipcode_lat': 39.2369558,
+			'zipcode_lng': -76.79135579999999,
+			'display_name': 'FirstLast',
+			'ideal_doula_nar': "I want someone who makes pancakes",
+			'visibility': 'none',
+			'due_date': "2015-01-20 00:00:00.000000"
+		}
+
+		lat = 39.2369558
+		lng = -76.79135579999999
+
+		users.db_add_parent(data)
+
+		parent_check = model.session.query(model.Parent).filter_by(email=data['email']).one()
+
+		# tests
+		self.assertEqual(parent_check.email, data['email'])		
+		self.assertTrue(passwords.check_password_hash(parent_check.password, data['password']))
+		self.assertEqual(parent_check.firstname, data['firstname'])
+		self.assertEqual(parent_check.lastname, data['lastname'])
+		self.assertEqual(parent_check.price_min, data['price_min'])
+		self.assertEqual(parent_check.price_max, data['price_max'])
+		self.assertEqual(parent_check.background, data['background'])
+		self.assertEqual(parent_check.image, data['image'])
+		self.assertEqual(parent_check.zipcode, data['zipcode'])		
+		self.assertEqual(parent_check.zipcode_lat, data['zipcode_lat'])
+		self.assertEqual(parent_check.zipcode_lng, data['zipcode_lng'])	
+		self.assertEqual(parent_check.display_name, data['display_name'])
+		self.assertEqual(parent_check.ideal_doula_nar, data['ideal_doula_nar'])
+		self.assertEqual(parent_check.visibility, data['visibility'])
+		self.assertEqual(parent_check.due_date, data['due_date'])
+
+	def test_save_user_image(self):
+		pass
 
 
 
@@ -89,35 +136,67 @@ class TestDBFunctions(DoulaDBTest):
 
 
 		# test set-up
-		zipcode = 94607
+	
 		
 		# this doula should come up in all zipcode ranges, including <=5 mi
 		doula1_data = {
 			'firstname': 'doula1',
 			'email': 'doula1@test.com',
-			'zipcode': 94607,
+			'password': 'password',
+			'zipcode': 94115,
 		}
 	 
 		# this doula should come up only in searches <= 10mi
-		doula3_data = {
-			'firstname': 'doula3',
-			'zipcode': 94706,
+		doula2_data = {
+			'firstname': 'doula2',
+			'email': 'doula2@test.com',
+			'password': 'password',
+			'zipcode': 94965,
 		}
 
 		# this doula should come up only in searches <= 25mi
 		doula3_data = {
 			'firstname': 'doula3',
-			'zipcode': 94549,
+			'email': 'doula3@test.com',
+			'password': 'password',
+			'zipcode': 94563,
 		}
 
 		# this doula should not come up in any zipcode searches
 		doula4_data = {
 			'firstname': 'doula4',
+			'email': 'doula4@test.com',
+			'password': 'password',
 			'zipcode': 94513,
 		}
 
+		users.db_add_doula(doula1_data)
+		users.db_add_doula(doula2_data)
+		users.db_add_doula(doula3_data)
+		users.db_add_doula(doula4_data)
+
+		doula_list5 = ['doula1']
+		doula_list10 = ['doula1', 'doula2']
+		doula_list25 = ['doula1', 'doula2', 'doula3']
+
 		
-		
+		# set-up for search_radius = 5
+		zipcode = 94121
+		zip_radius_list = [5, 10, 25]
+		for radius in zip_radius_list:
+			min_lat, max_lat, min_lng, max_lng = api_helpers.create_bounding_box(zipcode, radius)
+			doula_obj_list = api_helpers.zip_radius_search(min_lat, max_lat, min_lng, max_lng)
+			doula_name_list = []
+			for doula in doula_obj_list:
+				doula_name_list.append(doula.firstname)
+
+			if radius == 5:
+				self.assertEqual(doula_list5, doula_name_list)
+			elif radius == 10:
+				self.assertEqual(doula_list10, doula_name_list)
+			elif radius == 25:
+				self.assertEqual(doula_list25, doula_name_list)
+
 		
 
 

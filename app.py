@@ -106,7 +106,7 @@ def process_signup_doula():
 	password = f.get('password')
 	password_again = f.get('password_again')
 	email = f.get('email')
-	zipcode = f.get('zip')
+	zipcode = f.get('zipcode')
 
 	if not passwords.password_check(password, password_again):
 		flash("Passwords do not match. Please enter your password again.")
@@ -226,10 +226,11 @@ def display_user_profile(id):
 
 	due_date = parent.due_date.strftime("%m/%d/%y")
 
-	
+	suggested_parent_list = users.suggest_parents()
 
 	return render_template('user-profile.html', parent = parent,
-												due_date = due_date)
+												due_date = due_date,
+												suggested_parent_list = suggested_parent_list)
 
 
 @app.route('/search', methods = ['GET'])

@@ -67,11 +67,22 @@ def save_user_image(user, pic, role):
 # TODO: needs a test
 def suggest_doulas():
 	doula_list = model.session.query(model.Doula).all()
-	suggested_doula_list = []
-	for i in range(1,4):
-		doula = doula_list.pop(randint(0, len(doula_list) - 1))
-		suggested_doula_list.append(doula)
-	return suggested_doula_list
+	if len(doula_list) > 4:
+		suggested_doula_list = []
+		for i in range(1,4):
+			doula = doula_list.pop(randint(0, len(doula_list) - 1))
+			suggested_doula_list.append(doula)
+		return suggested_doula_list
+	return None
 
+def suggest_parents():
+	parent_list = model.session.query(model.Parent).all()
+	if len(parent_list) > 4:
+		suggested_parent_list = []
+		for i in range(1,4):
+			parent = parent_list.pop(randint(0, len(parent_list) - 1))
+			suggested_parent_list.append(parent)
+		return suggested_parent_list
+	return None
 
 
