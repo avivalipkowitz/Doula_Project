@@ -7,7 +7,7 @@ dl dd {
 }
 
 .logo{
-	width: 100%;
+	width: 80%;
 	height: auto;
 }
 .box{
@@ -56,7 +56,9 @@ dl dd {
 
 #profile-column-right {
 	text-align:left;
-	background-color: #D6DCDC;
+	background-color: white;
+	padding: 5px;
+	margin: 10px;
 }
 
 .doula-suggestion {
@@ -133,6 +135,13 @@ table {
 body {
 	background-color: #F8F8F1;
 }
+
+
+#doula-profile-pic {
+	margin: 5px;
+}
+
+
 
 /*a .editable {
 	color: black;

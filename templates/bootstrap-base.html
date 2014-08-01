@@ -54,7 +54,14 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="navbar-brand">
-            <li><a href="/"><img src="/static/images/tiny-kitten.png"></a></li>
+            <li>
+              {% if current_user.is_authenticated() and current_user.is_doula() %}
+                <a href="/doula/{{ current_user.id }}"><img src="/static/images/tiny-kitten.png"></a></li>
+              {% elif current_user.is_authenticated() and not current_user.is_doula() %}
+                <a href="/parent/{{ current_user.id }}"><img src="/static/images/tiny-kitten.png"></a></li>
+              {% elif current_user.is_anonymous %}
+                <a href="/"><img src="/static/images/tiny-kitten.png"></a></li>
+              {% endif %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             {% block navbar %}
@@ -98,10 +105,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
     
     <!-- this is from jquery datepicker page -->
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>

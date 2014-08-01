@@ -11,7 +11,7 @@
   </div>
   <div class="row">
       <div class="col-md-4 col-sm-5" id="profile-column-left">
-        <div id="parent-profile-pic"> <img width="150" src="/static/images/uploads/parent_{{ parent.id }}.jpg"> 
+        <div id="parent-profile-pic"> <img width="250" src="/static/images/uploads/parent_{{ parent.id }}.jpg"> 
         </div>
         <div id="calendar" width="150"> 
           <p>Due Date: {{ due_date }}</p>
@@ -24,7 +24,7 @@
           <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="firstname" data-original-title title data-url="/parent_edit" data-title="Enter your first name">{{ parent.firstname }} </a>
           <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="lastname" data-original-title title data-url="/parent_edit" data-title="Enter your last name">{{ parent.lastname }} </a>
         <h4> Zipcode </h4> 
-          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="zipcode" data-original-title title data-url="/parent_edit" data-title="Enter your zipcode">{{ parent.zipcode }}
+          <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="zipcode" data-original-title title data-url="/parent_edit" data-title="Enter your zipcode">{{ parent.zipcode }}</a>
         <h4> Price </h4> 
           <a href="#" class="editable" data-type="number" data-pk="{{ parent.id }}" data-name="price_min" data-original-title title data-url="/parent_edit" data-title="Enter the minimum you'd like to pay">${{ parent.price_min }}</a>
           to <a href="#" class="editable" data-type="number" data-pk="{{ parent.id }}" data-name="price_max" data-original-title title data-url="/parent_edit" data-title="Enter the maximum you'd like to pay">${{ parent.price_max }}</a>
@@ -34,39 +34,29 @@
           <a href="#" class="editable" data-type="text" data-pk="{{ parent.id }}" data-name="ideal_nar" data-original-title title data-url="/parent_edit" data-title="Describe your ideal doula">{{ parent.ideal_doula_nar }} </a>
       </div>
 
+    
+        
       <div class="col-md-3 col-sm-12" id="profile-column-right">
-        <p>Similar Parents</p>
-        <div class="parent-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-1-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>Parent1</p>
+        {% if suggested_parent_list != None %} 
+          <div class="col-xsm-12">
+            <h4 style="text-align: center">Similar Parents</h4>
           </div>
-          <div class="col-sm-6" id="suggestion-1-desc"> 
-            <p>Name</p>
-            <p>location<p>
-          </div>
-        </div>
-
-        <div class="parent-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-2-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>Parent2</p>
-          </div>
-          <div class="col-sm-6" id="suggestion-2-desc"> 
-            <p>Name</p>
-            <p>location<p>
-          </div>
-        </div>
-        <div class="parent-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-3-thumb"> 
-            <img width=50 src="/static/images/uploads/AvivaLipkowitz.jpg">
-            <p>Parent3</p>
-          </div>
-          <div class="col-sm-6" id="suggestion-3-desc"> 
-            <p>Name</p>
-            <p>location<p>
-          </div>
-        </div>
+            {% for s_parent in suggested_parent_list %}
+              {% if s_parent.id == parent.id %}  
+                <div class="parent-suggestion col-md-12 col-sm-4">
+                  <div class="col-sm-6" id="suggestion-1-thumb"> 
+                    <img style="margin:2" width=50 src="/static/images/uploads/{{ s_parent.image }}">
+                  </div>
+                  <div class="col-sm-6" id="suggestion-1-desc">
+                    <p> <a href="/parent/{{ s_parent.id }}">{{ s_parent.firstname }} {{ s_parent.lastname }}</a>
+                      {{ s_parent.zipcode }}
+                    </p>
+                    <br>
+                  </div>
+                </div>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
       </div>
   </div>
 </div>

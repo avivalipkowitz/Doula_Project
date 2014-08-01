@@ -10,7 +10,11 @@
 		<tr><th>Doula</th><th>Practice</th><th>Zipcode</th></tr>
 		{% for doula in doula_list %}
 		<tr>
-			<td><a href="/doula/{{ doula.id }}">{{ doula.firstname }} {{ doula.lastname }}</a></td>
+			<td><a href="/doula/{{ doula.id }}">
+				<img width="30" src="/static/images/uploads/{{ doula.image }}">
+				{{ doula.firstname }} {{ doula.lastname }}
+				</a>
+			</td>
 				{% if doula.website %}
 					<td><a href="{{ doula.website }}"> {{ doula.practice }}</td>
 				{% else %}

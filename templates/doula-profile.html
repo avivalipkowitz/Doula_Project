@@ -9,16 +9,19 @@
     {% endif %}
   </div>
   <div class="row">
-  		<div class="col-md-3 col-sm-4" id="profile-column-left">
-  			<div id="doula-profile-pic"> <img width="150" src="/static/images/uploads/AvivaLipkowitz.jpg"> 
+  		<div class="col-md-4 col-sm-5" id="profile-column-left">
+  			<div class="col-xs-12" id="doula-profile-pic"> 
+          {% if doula.image != None %}
+            <img width="250" src="/static/images/uploads/{{ doula.image }}"> 
+          {% else %}
+            <img width="250" src="/static/images/uploads/default.jpg">
+          {% endif %}
         </div>
-  			<div id="calendar" width="150"> 
-          <img src="/static/images/calendar.png" width="150">
-          <p>Calendar of availability</p>
-        </div>
+  			<div class="col-xs-12" style="text-align:center"><h4>Calendar of availability</h4></div>
+        <div class="col-xs-12" id="calendar" width="150"></div>
   		</div>
 
-  		<div class="col-md-6 col-sm-8" id="profile-column-middle">
+  		<div class="col-md-5 col-sm-7" id="profile-column-middle">
   			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
   			<h2>
           <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="firstname" data-original-title title data-url="/doula_edit" data-title="Enter your first name">{{ doula.firstname }}
@@ -50,28 +53,44 @@
   		</div>
 
   		<div class="col-md-3 col-sm-12" id="profile-column-right">
-        <p>Similar Doulas</p>
-        {% for doula in suggested_doula_list %}
-  			<div class="doula-suggestion col-md-12 col-sm-4">
-          <div class="col-sm-6" id="suggestion-1-thumb"> 
-            <img width=50 src="/static/images/uploads/{{ doula.image }}">
-            <p> {{ doula.firstname }} {{ doula.lastname }}</p>
+        {% if suggested_doula_list != None %} 
+          <div class="col-xsm-12">
+            <h4 style="text-align: center">Similar Doulas</h4>
           </div>
-          <div class="col-sm-6" id="suggestion-1-desc"> 
-            <p>{{ doula.zipcode }}<p>
-          </div>
-        </div>
-        {% endfor %}
+            {% for s_doula in suggested_doula_list %}
+          		{% if doula.id == s_doula.id %}
+                <br>
+              {% else %}	
+                <div class="doula-suggestion col-md-12 col-sm-4">
+                  <div class="col-sm-6" id="suggestion-thumb"> 
+                    <img style="margin:2" width=50 src="/static/images/uploads/{{ s_doula.image }}">
+                  </div>
+                  <div class="col-sm-6" id="suggestion-desc">
+                    <p> <a href="/doula/{{ s_doula.id }}">{{ s_doula.firstname }} {{ s_doula.lastname }}</a>
+                      {{ s_doula.zipcode }}
+                    </p>
+                    <br>
+                  </div>
+                </div>
+              {% endif %}
+          {% endfor %}
+        {% endif %}
       </div>
 	</div>
 </div>
 
 {% endblock %}
-<!-- Javascript to turn on editability -->
+
 
 {% block script %}
- <!-- preferably keep this just on the pages that are editable (profile pages) -->
-  if doula == curent_user:  
+
+    <script>  
+      $(function() {
+        $( "#calendar" ).datepicker({ defaultDate: "{{ due_date }}" });
+      });
+    </script>
+
+     <!-- preferably keep this just on the pages that are editable (profile pages) -->
     <script>
       {% if current_user == doula %}
         $.fn.editable.defaults.mode = 'popup';
