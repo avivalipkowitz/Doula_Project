@@ -27,19 +27,19 @@ What’s inside?
 -	model.py: This sets up and creates the database and user classes. It also contains methods related specifically to adding users to the database.
 -	Doulahoop.db: database that stores user information
 -	Static folder includes:
-o	Templates: these are html templates that use Jinja to render pages to the browser.
-o	Images: including webpage images, and user profile pictures (in the Uploads file)
-o	Libraries (Jquery, Bootstrap)
-o	Custom CSS styles
+  - Templates: these are html templates that use Jinja to render pages to the browser.
+  - Images: including webpage images, and user profile pictures (in the Uploads file)
+  - Libraries (Jquery, Bootstrap)
+  - Custom CSS styles
 -	Tests
-o	tests.py: unit-tests
-o	db_tests.py: tests functions that query the database or store information in the database
-o	site_tests.py: tests the Flask framework
+  - tests.py: unit-tests
+  - db_tests.py: tests functions that query the database or store information in the database
+  - site_tests.py: tests the Flask framework
 -	Helpers: contains files with functions that are imported into app.py to facilitate readability
-o	api_helpers.py: methods related specifically to the Google geocoding API
-o	forms.py: methods related to creating and processing form information
-o	passwords.py: methods related to hashing, storing, and calling passwords
-o	users.py: methods related to creating user accounts, and displaying profile pages
+  - api_helpers.py: methods related specifically to the Google geocoding API
+  - forms.py: methods related to creating and processing form information
+  - passwords.py: methods related to hashing, storing, and calling passwords
+  - users.py: methods related to creating user accounts, and displaying profile pages
 
 
 
