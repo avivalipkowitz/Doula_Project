@@ -8,8 +8,19 @@
       <button id="enable" class="btn btn-default">edit profile</button>
     {% endif %}
   </div>
+  
   <div class="row">
-  		<div class="col-md-4 col-sm-5" id="profile-column-left">
+    <div class="col-xs-12">
+
+    <div>
+
+  </div>
+
+
+
+
+  <div class="row">
+  		<div class="col-sm-5 col-md-4" id="profile-column-left">
   			<div class="col-xs-12" id="doula-profile-pic"> 
           {% if doula.image != None %}
             <img width="250" src="/static/images/uploads/{{ doula.image }}"> 
@@ -21,7 +32,7 @@
         <div class="col-xs-12" id="calendar" width="150"></div>
   		</div>
 
-  		<div class="col-md-5 col-sm-7" id="profile-column-middle">
+  		<div class="col-sm-7 col-md-5" id="profile-column-middle">
   			<!-- all the jinja is place-holder, i have NOT decided on variable names yet -->
   			<h2>
           <a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-name="firstname" data-original-title title data-url="/doula_edit" data-title="Enter your first name">{{ doula.firstname }}
@@ -52,7 +63,7 @@
           Zip:<a href="#" class="editable" data-type="text" data-pk="{{ doula.id }}" data-original-title title data-name="zipcode" data-url="/doula_edit" data-title="Enter your zipcode"> {{ doula.zipcode }}</a>
   		</div>
 
-  		<div class="col-md-3 col-sm-12" id="profile-column-right">
+  		<div class="col-xs-12 col-md-3" id="profile-column-right">
         {% if suggested_doula_list != None %} 
           <div class="col-xsm-12">
             <h4 style="text-align: center">Similar Doulas</h4>
@@ -61,7 +72,7 @@
           		{% if doula.id == s_doula.id %}
                 <br>
               {% else %}	
-                <div class="doula-suggestion col-md-12 col-sm-4">
+                <div class="suggestion col-xs-4 col-md-12">
                   <div class="col-sm-6" id="suggestion-thumb"> 
                     <img style="margin:2" width=50 src="/static/images/uploads/{{ s_doula.image }}">
                   </div>
