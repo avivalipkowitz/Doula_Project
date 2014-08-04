@@ -22,7 +22,7 @@ class TestSiteFunctions(unittest.TestCase):
 		assert "I'm a parent" in jumbotext
 		assert "I'm a doula" in jumbotext
 
-	def test_signup_doula_page(self):
+	def test_load_signup_doula(self):
 		resp = self.app.get('/signup_doula')
 
 		# check that page loads
@@ -31,11 +31,39 @@ class TestSiteFunctions(unittest.TestCase):
 		# check that important pieces are in place
 		q = pq(resp.data)
 
-		doula_form = q('#login_table').text()
-		submit = q('#doula_signup').text()
+		doula_form = q('#signup_table')
+		submit = q('#doula_signup')
 
-		assert "First name" in doula_form
-		assert "submit" in submit
+		assert doula_form # checking that the form exists
+		self.assertEqual(len(doula_form), 1) # checking that there is only one form on the page
+		assert submit # checking that the button exists
+		self.assertEqual(submit[0].value, "Sign Up") # checking that the text in the button is correct
+
+	def test_submit_signup_doula(self):
+		data = {}
+		resp = self.app.post('/signup_doula', data = data)
+
+		self.assertEqual(resp.status_code, 200)
+
+		# test web content, should complain that I didn't enter a first name (probably in Flashed messages in .alert class)
+
+		data = {
+			'firstname': 'Aviva',
+			'lastname': 'Lipkowitz'
+			#add more here, whatever the minimum for the test to pass is
+
+		}	
+
+		resp = self.app.post('/signup_doula', data = data)
+
+		# test that successful post leads to redirect
+		self.assertEqual(resp.status_code, 302)
+
+		# test that the test database has the test info test
+		# maybe copy the setup stuff from the test_db.py so that I'm using the right db
+
+
+
 
 
 		

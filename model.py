@@ -1,5 +1,5 @@
 #from ratings model.py
-import datetime
+
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, DateTime, Text
@@ -9,6 +9,9 @@ from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import passwords
+import datetime
+import time
+
 
 #from ratings tutorial
 ENGINE = None
@@ -147,14 +150,23 @@ class Parent(Base):
 		self.image = data.get('image')
 		self.zipcode = data.get('zipcode')
 		self.practice = data.get('practice')
-		self.phone = data.get('phone')
-		self.website = data.get('website')
-		self.services = data.get('services')
+		self.display_name = data.get('display_name')
+		self.ideal_doula_nar = data.get('ideal_doula_nar')
+		self.visibility = data.get('visibility')
+		
 
 		password = data.get('password')
 		hashed_pw = passwords.set_password(password)
 		self.password = hashed_pw
 
+		unicode_due_date = data.get('due_date')
+		self.due_date = datetime.datetime.strptime(data.get('due_date'), "%Y-%m-%d %H:%M:%S.%f")
+		
+
+
+	def store_coordinates(self, lat, lng):
+		self.zipcode_lat = lat
+		self.zipcode_lng = lng
 
 	def is_authenticated(self):
 		return True

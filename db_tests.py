@@ -5,6 +5,7 @@ import api_helpers
 import users
 import model
 import passwords
+import datetime
 
 
 
@@ -108,6 +109,9 @@ class TestDBFunctions(unittest.TestCase):
 
 		parent_check = model.session.query(model.Parent).filter_by(email=data['email']).one()
 
+
+		due_date = datetime.datetime.strptime(data.get('due_date'), "%Y-%m-%d %H:%M:%S.%f")
+
 		# tests
 		self.assertEqual(parent_check.email, data['email'])		
 		self.assertTrue(passwords.check_password_hash(parent_check.password, data['password']))
@@ -123,7 +127,8 @@ class TestDBFunctions(unittest.TestCase):
 		self.assertEqual(parent_check.display_name, data['display_name'])
 		self.assertEqual(parent_check.ideal_doula_nar, data['ideal_doula_nar'])
 		self.assertEqual(parent_check.visibility, data['visibility'])
-		self.assertEqual(parent_check.due_date, data['due_date'])
+
+		self.assertEqual(parent_check.due_date, due_date)
 
 	def test_save_user_image(self):
 		pass

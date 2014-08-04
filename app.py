@@ -3,6 +3,7 @@ from flask.ext.login import LoginManager, login_required, logout_user, login_use
 from flask.ext.principal import Principal, Permission, RoleNeed
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 import requests
 import json
 import jinja2
@@ -13,8 +14,10 @@ import datetime
 import api_helpers 
 import passwords
 import users
+# import forms
 
-SECRET_KEY = "fish"
+SECRET_KEY = 'FISH'
+CSRF_SECRET_KEY = os.environ.get('CSRF_SECRET_KEY')
 UPLOAD_FOLDER = 'static/images/uploads'
 
 app = Flask(__name__)
@@ -32,6 +35,17 @@ principals = Principal(app)
 #create a permission with a single Need, in this case a RoleNeed.
 doula_permission = Permission(RoleNeed('doula'))
 admin_permission = Permission(RoleNeed('admin'))
+
+# @app.route('/test_form', methods=['GET'])
+# def render_form():
+# 	return render_template('submit.html', form=form)
+
+
+# @app.route('/test_form', methods=['POST'])
+# def post_form():
+# 	form = MyForm()
+# 	if form.validate_on_submit():
+# 		return redirect('/success')
 
 @login_manager.user_loader
 def load_user(user_id):
