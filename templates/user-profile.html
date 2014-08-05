@@ -72,9 +72,9 @@
       });
     </script>
 
-
-    <script>
-      if current_user == {{ parent }}:  
+    {% if current_user == parent %}
+      <script>
+       
         $.fn.editable.defaults.mode = 'popup';
 
         $(document).ready(function() {
@@ -85,6 +85,7 @@
 
           })
         });
-    </script>
+      </script>
+    {% endif %}
 {% endblock %}
 
