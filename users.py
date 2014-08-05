@@ -4,6 +4,8 @@ import model
 import api_helpers
 import os
 from random import randint
+import passwords
+import pdb
 
 # Following code is from flask.pocoo.org/docs/patterns/fileuploads
 UPLOAD_FOLDER = 'static/images/uploads'
@@ -27,6 +29,7 @@ def which_database(role):
 		return model.Parent
 
 	return None		
+
 
 # TODO: combine these two functions into one that uses role to determine db
 def db_add_doula(doula_dict):
@@ -85,4 +88,40 @@ def suggest_parents():
 		return suggested_parent_list
 	return None
 
+def validate_doula_signup(data):
+	password = data.get('password', "")
+	password_again = data.get('password_again', "")
+	email = data.get('email', "")
+	zipcode = data.get('zipcode', "")
+	image = data.get('image', "")
+
+	if email == "":
+		flash("Please enter an email address")
+		return False
+
+	if password == "":
+		flash("Please enter your password")
+		return False
+	if password_again == "":
+		flash("Please confirm your password")
+		return False
+
+	if not passwords.password_check(password, password_again):
+		flash("Passwords do not match. Please enter your password again.")
+		return False
+
+	existing_user_list = model.session.query(model.Doula).filter_by(email = email).all()
+	if len(existing_user_list) > 0:
+		flash("Email already exists. Login with that email, or sign up with a different email.")
+		return False
+
+	if zipcode == "":
+		flash("Please enter your zipcode below.")
+		return False
+
+	if image == "":
+		flash("Please upload a profile picture")
+		return False
+
+	return True
 
