@@ -1,10 +1,22 @@
+import os
+os.environ['DATABASE_URL'] = "sqlite:///doulahoop_tests.db"
+
 import unittest
 from app import app
 from pyquery import PyQuery as pq
 
+
+
+
 class TestSiteFunctions(unittest.TestCase):
+	@classmethod
+	def seUpClass(self):
+		print os.environ['DATABASE_URL']
+		model.create_db()
+
 	def setUp(self):
 		self.app = app.test_client() #this uses flask to create test client, which allows us to GET/POST requests like a browser
+		
 
 
 	def test_index_page(self):
@@ -41,16 +53,25 @@ class TestSiteFunctions(unittest.TestCase):
 
 	def test_submit_signup_doula(self):
 		data = {}
-		resp = self.app.post('/signup_doula', data = data)
+		resp = self.app.post('/signup_doula', data=data, follow_redirects=True)
 
 		self.assertEqual(resp.status_code, 200)
 
-		# test web content, should complain that I didn't enter a first name (probably in Flashed messages in .alert class)
+		# Test that the response page shows the flash error message
+		q = pq(resp.data)
 
+		flashes = q('.flashes').text()
+
+		assert "email address" in flashes
+
+
+		# Test what happens when I post real data
 		data = {
-			'firstname': 'Aviva',
-			'lastname': 'Lipkowitz'
-			#add more here, whatever the minimum for the test to pass is
+			'email': 'test@test.com',
+			'password': 'password',
+			'password_again': 'password',
+			'zipcode': '94607',
+			'image': 'pic.jpg'
 
 		}	
 
@@ -61,6 +82,15 @@ class TestSiteFunctions(unittest.TestCase):
 
 		# test that the test database has the test info test
 		# maybe copy the setup stuff from the test_db.py so that I'm using the right db
+
+		#query database filter_by email address=test@test.com .all(), should get one record back check length
+
+		#for that record, match the different attributes to the dictionary fields
+
+		
+
+
+
 
 
 

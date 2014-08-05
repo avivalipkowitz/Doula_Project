@@ -14,10 +14,11 @@ import datetime
 import api_helpers 
 import passwords
 import users
+
+import pdb
 # import forms
 
 SECRET_KEY = 'FISH'
-CSRF_SECRET_KEY = os.environ.get('CSRF_SECRET_KEY')
 UPLOAD_FOLDER = 'static/images/uploads'
 
 app = Flask(__name__)
@@ -116,24 +117,13 @@ def process_signup_doula():
 	# TODO: maybe fix with method that takes unspecified # of args
 	# TODO, stretch: return form data in a json
 	f = request.form
-
 	password = f.get('password')
 	password_again = f.get('password_again')
 	email = f.get('email')
 	zipcode = f.get('zipcode')
+	image = f.get('image')
 
-	if not passwords.password_check(password, password_again):
-		flash("Passwords do not match. Please enter your password again.")
-		return redirect('/signup_doula')
-
-
-	# TODO: verify how to query database to see if an email is already registered
-	if model.session.query(model.Doula).get(email) != None:
-		print model.session.query(model.Doula).get(email)
-		flash("Email already exists. Login with that email, or sign up with a different email.")
-		return redirect('/signup_doula')
-
-	else:
+	if users.validate_doula_signup(f):
 		lat, lng = api_helpers.geocode_zipcode(zipcode)
 		hashed_password = passwords.set_password(password)
 
@@ -141,11 +131,64 @@ def process_signup_doula():
 		doula.parse_form_data(request.form)
 		doula.store_coordinates(lat, lng)
 		model.session.add(doula)
+
 		model.session.commit()
 		
 		users.save_user_image(doula, request.files['image'], 'doula')		
 
 		return redirect('/')
+
+	else:
+		return redirect('/signup_doula')
+
+
+	# password = f.get('password')
+	# password_again = f.get('password_again')
+	# email = f.get('email')
+	# zipcode = f.get('zipcode')
+	# image = f.get('image')
+
+	# if email == "":
+	# 	flash("Please enter an email address")
+	# 	return redirect('/signup_doula')
+
+	# if password == "":
+	# 	flash("Please enter your password")
+	# 	return redirect('/signup_doula')
+	# if password_again == "":
+	# 	flash("Please confirm your password")
+	# 	return redirect('/signup_doula')
+
+	# if not passwords.password_check(password, password_again):
+	# 	flash("Passwords do not match. Please enter your password again.")
+	# 	return redirect('/signup_doula')
+
+	# existing_user_list = model.session.query(model.Doula).filter_by(email = email).all()
+	# if len(existing_user_list) > 0:
+	# 	flash("Email already exists. Login with that email, or sign up with a different email.")
+	# 	return redirect('/signup_doula')
+
+	# if zipcode == "":
+	# 	flash("Please enter your zipcode below.")
+	# 	return redirect('/signup_doula')
+
+	# if image == None:
+	# 	flash("Please upload a profile picture")
+	# 	return redirect('/signup_doula')
+
+	# else:
+	# 	lat, lng = api_helpers.geocode_zipcode(zipcode)
+	# 	hashed_password = passwords.set_password(password)
+
+	# 	doula = model.Doula()
+	# 	doula.parse_form_data(request.form)
+	# 	doula.store_coordinates(lat, lng)
+	# 	model.session.add(doula)
+	# 	model.session.commit()
+		
+	# 	users.save_user_image(doula, request.files['image'], 'doula')		
+
+	# 	return redirect('/')
 
 @app.route('/signup_parent', methods = ['GET'])
 def signup_parent():
