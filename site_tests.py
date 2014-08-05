@@ -99,24 +99,7 @@ class TestSiteFunctions(unittest.TestCase):
 		self.assertEqual(doula.zipcode, data['zipcode'])
 		self.assertEqual(doula.image, data['image'])
 
-		
-
-
-
-
-		
-
-
-
-
-
-
-
-
-		
-
-
-
+		# Repeat above tests for parent case
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,36 +1,34 @@
-from flask import Flask, Response, request, session, render_template, g, redirect, url_for, flash
+from flask import Flask, Response, request, session, render_template, g, redirect, flash
 from flask.ext.login import LoginManager, login_required, logout_user, login_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
 import requests
 import json
 import jinja2
-import model
 import os
 import datetime
 
+import model
 import api_helpers 
 import passwords
 import users
 
 import pdb
-# import forms
 
 SECRET_KEY = 'FISH'
 UPLOAD_FOLDER = 'static/images/uploads'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #from flask fileuploads tutorial
+#from flask file uploads tutorial
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 # Flask login package turtorial 
-login_manager = LoginManager() #from flask-login tutorial
+login_manager = LoginManager() 
 login_manager.init_app(app)
 login_manager.login_view = '/login'
 
-
 @login_manager.user_loader
+# stores logged-in user in the session, user gets passed to login function below
 def load_user(user_id):
 
 	role = session.get('role', None)
@@ -45,13 +43,8 @@ def load_user(user_id):
 def home_page():
 	return render_template('index.html')
 
-@app.route('/base_template')
-def index():
-	return render_template('base.html')
-
 @app.route('/login', methods = ['GET'])
 def show_login():
-	print "LOGIN ARGS:", request.args
 	next = request.args.get('next')
 	return render_template('login.html', next = next)
 
@@ -73,8 +66,10 @@ def process_login():
 		flash("Invalid login")
 		return redirect('/login')
 	else:
+		# save the user role to the session
 		session['role'] = role
-		login_user(user) # this saves the user info in the session
+		# save the user info in the session
+		login_user(user) 
 		flash("You successfully logged in!")
 		id = user.id
 
@@ -86,11 +81,9 @@ def logout():
 	logout_user()
 	return redirect('/')
 
-
 @app.route('/signup_doula', methods = ['GET'])
 def signup_doula():
 	return render_template('sign-up-doula.html')
-
 
 @app.route('/signup_doula', methods = ['POST'])
 def process_signup_doula():
@@ -135,6 +128,7 @@ def process_signup_parent():
 	zipcode = f.get('zipcode')
 	image = f.get('image')
 
+	# create a method in users.py to validate form information, like ('signup_doula')
 	if not passwords.password_check(password, password_again):
 		flash("Passwords do not match. Please enter your password again.")
 		return redirect('/signup_parent')
@@ -159,7 +153,7 @@ def process_signup_parent():
 
 		return redirect('/login')
 
-@app.route('/doula/<int:id>') #change this route to include the doula's <int:id> in the url
+@app.route('/doula/<int:id>')
 def display_doula_profile(id):
 	doula = model.session.query(model.Doula).get(id)
 	suggested_doula_list = users.suggest_doulas()

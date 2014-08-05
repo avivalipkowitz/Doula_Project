@@ -5,28 +5,22 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, DateTime, Text
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, backref
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import passwords
 import datetime
 import time
 
-
-#from ratings tutorial
 ENGINE = None
 Session = None
 
-# from ratings model.py
-# engine = create_engine("sqlite:///doulahoop.db", echo = False)
-print "[model] DATABASE_URL: ", os.environ.get('DATABASE_URL')
+# print "[model] DATABASE_URL: ", os.environ.get('DATABASE_URL')
 engine = create_engine(os.environ.get('DATABASE_URL', "sqlite:///doulahoop.db"), echo = False)
 
 session = scoped_session(sessionmaker(bind = engine,
 									  autocommit = False,
 									  autoflush = False))
 
-# from ratings model.py
 Base = declarative_base()
 Base.query = session.query_property()
 
@@ -40,11 +34,8 @@ def connect_db(db):
 def create_db():
 	Base.metadata.create_all(engine)
 
-
-
 class Doula(Base):
 	__tablename__ = "doulas"
-
 
 	id = Column(Integer, primary_key = True)
 	email = Column(String(64), nullable = False)
@@ -63,10 +54,6 @@ class Doula(Base):
 	website = Column(String(100), nullable = True)
 	services = Column(Text, nullable = True)
 	reviews = Column(String(200), nullable = True)
-	
-
-	# From flask password salt turtorial
-
 
 	def is_authenticated(self):
 		return True
@@ -105,11 +92,8 @@ class Doula(Base):
 		self.zipcode_lat = lat
 		self.zipcode_lng = lng
 
-
-
 class Parent(Base):
 	__tablename__ = "parents"
-
 
 	id = Column(Integer, primary_key = True) 
 	email = Column(String(64), nullable = False)
@@ -142,7 +126,6 @@ class Parent(Base):
 		self.display_name = data.get('display_name')
 		self.ideal_doula_nar = data.get('ideal_doula_nar')
 		self.visibility = data.get('visibility')
-		
 
 		password = data.get('password')
 		hashed_pw = passwords.set_password(password)
@@ -150,8 +133,6 @@ class Parent(Base):
 
 		unicode_due_date = data.get('due_date')
 		self.due_date = datetime.datetime.strptime(data.get('due_date'), "%Y-%m-%d")
-		
-
 
 	def store_coordinates(self, lat, lng):
 		self.zipcode_lat = lat
@@ -171,12 +152,3 @@ class Parent(Base):
 
 	def is_doula(self):
 		return False
-
-
-def main():
-    pass
-
-if __name__ == "__main__":
-    main()
-
-
