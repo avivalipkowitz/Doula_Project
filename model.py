@@ -40,18 +40,7 @@ def connect_db(db):
 def create_db():
 	Base.metadata.create_all(engine)
 
-# From ratings model.py
-# Class declarations
-# Add a User(Base) class that has all common attributes between 
-# Parent and Doula, so that this doesn't have to be replicated
 
-# Methods from salty passwords tutorial. I don't think they should be class methods though, so I pulled them out here.
-# def set_password(password):
-# 	pw_hash = generate_password_hash(password)
-# 	return pw_hash
-
-# def check_password(password):
-# 	return check_password_hash(pw_hash, password)
 
 class Doula(Base):
 	__tablename__ = "doulas"
@@ -140,7 +129,7 @@ class Parent(Base):
 	due_date = Column(DateTime, nullable = True)
 
 
-	def parse_form_data(self, data):
+	def parse_parent_form_data(self, data):
 		self.email = data.get('email')
 		self.firstname = data.get('firstname')
 		self.lastname = data.get('lastname')
@@ -160,7 +149,7 @@ class Parent(Base):
 		self.password = hashed_pw
 
 		unicode_due_date = data.get('due_date')
-		self.due_date = datetime.datetime.strptime(data.get('due_date'), "%Y-%m-%d %H:%M:%S.%f")
+		self.due_date = datetime.datetime.strptime(data.get('due_date'), "%Y-%m-%d")
 		
 
 
@@ -185,7 +174,6 @@ class Parent(Base):
 
 
 def main():
-    """In case we need this for something"""
     pass
 
 if __name__ == "__main__":

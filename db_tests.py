@@ -37,7 +37,8 @@ class TestDBFunctions(unittest.TestCase):
 	def test_example(self):
 		self.assertEqual(1 + 1, 2)
 
-	# tests run in alphabetical order, but this needs to go first
+	# tests run in alphabetical order, but this needs to go first to populate the database
+	# test that I create a doula object correctly
 	def test_01_create_doula(self):
 		# test set-up
 		data = {
