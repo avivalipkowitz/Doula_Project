@@ -6,5 +6,8 @@ def password_check(password, password_again):
 	return password == password_again
 	
 def set_password(password):
-	pw_hash = generate_password_hash(password)
-	return pw_hash
+	if password:
+		pw_hash = generate_password_hash(password)
+		return pw_hash
+
+	return ""
