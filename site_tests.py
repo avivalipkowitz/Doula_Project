@@ -1,6 +1,8 @@
 import os
 os.environ['DATABASE_URL'] = "sqlite:///doulahoop_tests.db"
 
+import model
+import passwords
 import unittest
 from app import app
 from pyquery import PyQuery as pq
@@ -57,7 +59,7 @@ class TestSiteFunctions(unittest.TestCase):
 
 		self.assertEqual(resp.status_code, 200)
 
-		# Test that the response page shows the flash error message
+		# Pt1: Test that the response page shows the flash error message
 		q = pq(resp.data)
 
 		flashes = q('.flashes').text()
@@ -65,7 +67,7 @@ class TestSiteFunctions(unittest.TestCase):
 		assert "email address" in flashes
 
 
-		# Test what happens when I post real data
+		# Pt2: Test what happens when I post real data
 		data = {
 			'email': 'test@test.com',
 			'password': 'password',
@@ -80,12 +82,27 @@ class TestSiteFunctions(unittest.TestCase):
 		# test that successful post leads to redirect
 		self.assertEqual(resp.status_code, 302)
 
-		# test that the test database has the test info test
-		# maybe copy the setup stuff from the test_db.py so that I'm using the right db
 
-		#query database filter_by email address=test@test.com .all(), should get one record back check length
 
-		#for that record, match the different attributes to the dictionary fields
+		# Pt3: Test that the test database has the test info test
+	
+		# test that only one record exists in the test database
+		doula_list = model.session.query(model.Doula).filter_by(email="test@test.com").all()
+
+		self.assertEqual(len(doula_list), 1)
+
+		# test that attributes of the database record match the attributes listed in the dictionary
+		doula = doula_list[0]
+
+		self.assertEqual(doula.email, data['email'])
+		self.assertEqual(passwords.check_password_hash(doula.password, data['password']), True)
+		self.assertEqual(doula.zipcode, data['zipcode'])
+		self.assertEqual(doula.image, data['image'])
+
+		
+
+
+
 
 		
 

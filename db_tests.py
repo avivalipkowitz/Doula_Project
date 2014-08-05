@@ -1,5 +1,7 @@
 import os
 os.environ['DATABASE_URL'] = "sqlite:///doulahoop_tests.db"
+UPLOAD_FOLDER = 'static/images/test_uploads'
+
 import unittest
 import api_helpers
 import users
