@@ -11,18 +11,18 @@ import pdb
 UPLOAD_FOLDER = 'static/images/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-# TODO: make private
+
 def allowed_file(filename):
 	return '.' in filename and \
 		filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
-# TODO: make private
-# need to make sure that this won't accept filenames without extensions
+
+# TODO: make sure that this won't accept filenames without extensions
 def file_extension(filename):
 	return filename.split('.')[-1]
 
 def which_database(role):
-	# TODO: explain why this is here wrt to database
+	# Because of the database structure (two user classes) there are no unique identifiers without also including the user type. This step is necessary in order to determine whice database to query.
 	if role == "doula":
 		return model.Doula
 	elif role == "parent":
@@ -31,9 +31,7 @@ def which_database(role):
 	return None		
 
 
-# TODO: combine these two functions into one that uses role to determine db
 def db_add_doula(doula_dict):
-	# TODO: Needs test
 	d = model.Doula()
 	
 	d.parse_form_data(doula_dict)
@@ -44,10 +42,9 @@ def db_add_doula(doula_dict):
 	model.session.commit()
 
 def db_add_parent(parent_dict):
-	# TODO: Needs test
 	d = model.Parent()
 	
-	d.parse_form_data(parent_dict)
+	d.parse_parent_form_data(parent_dict)
 	lat, lng = api_helpers.geocode_zipcode(parent_dict['zipcode'])
 	d.store_coordinates(lat, lng)
 
@@ -57,17 +54,12 @@ def db_add_parent(parent_dict):
 def save_user_image(user, pic, role):
 	if pic and allowed_file(pic.filename):
 		filename = "%s_%s.%s" % (role, user.id, file_extension(pic.filename))
-		# TODO: check to see if this way of pointing to the 'upload_folder' is correct
 		pic.save(os.path.join(UPLOAD_FOLDER, filename))
 
 		user.image = filename
 		model.session.commit()	
 
-# TODO: get this to work
-# def current_user_check(role, email):
-# 	return model.session.query(which_database(role)).get('email', None) 
-
-# TODO: needs a test
+# todo: needs a test
 def suggest_doulas():
 	doula_list = model.session.query(model.Doula).all()
 	if len(doula_list) > 4:
@@ -78,6 +70,7 @@ def suggest_doulas():
 		return suggested_doula_list
 	return None
 
+# todo: needs a test
 def suggest_parents():
 	parent_list = model.session.query(model.Parent).all()
 	if len(parent_list) > 4:
@@ -88,6 +81,7 @@ def suggest_parents():
 		return suggested_parent_list
 	return None
 
+# todo: needs a unit test
 def validate_doula_signup(data):
 	password = data.get('password', "")
 	password_again = data.get('password_again', "")

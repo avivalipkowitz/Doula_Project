@@ -17,13 +17,16 @@ class TestSiteFunctions(unittest.TestCase):
 		model.create_db()
 
 	def setUp(self):
-		self.app = app.test_client() #this uses flask to create test client, which allows us to GET/POST requests like a browser
+		#this uses flask to create test client, which allows us to GET/POST requests like a browser
+		self.app = app.test_client() 
+		
 		
 
 
 	def test_index_page(self):
-		resp = self.app.get('/')
 		# resp is a python object
+		resp = self.app.get('/')
+		
 
 		
 		# make sure page loads
@@ -31,8 +34,9 @@ class TestSiteFunctions(unittest.TestCase):
 
 		q = pq(resp.data)
 
-		jumbotext = q('.jumbotron').text() #looks for jumbotron and returns text, not html
-		
+		#looks for jumbotron and returns text, not html
+		jumbotext = q('.jumbotron').text() 
+
 		assert "I'm a parent" in jumbotext
 		assert "I'm a doula" in jumbotext
 
@@ -48,10 +52,15 @@ class TestSiteFunctions(unittest.TestCase):
 		doula_form = q('#signup_table')
 		submit = q('#doula_signup')
 
-		assert doula_form # checking that the form exists
-		self.assertEqual(len(doula_form), 1) # checking that there is only one form on the page
-		assert submit # checking that the button exists
-		self.assertEqual(submit[0].value, "Sign Up") # checking that the text in the button is correct
+		# checking that the form exists
+		assert doula_form 
+		
+		# checking that there is only one form on the page
+		self.assertEqual(len(doula_form), 1) 
+		# checking that the button exists
+		assert submit 
+		# checking that the text in the button is correct
+		self.assertEqual(submit[0].value, "Sign Up") 
 
 	def test_submit_signup_doula(self):
 		data = {}
